@@ -2,31 +2,27 @@ from dash import Dash
 from dash_bootstrap_components.themes import BOOTSTRAP
 
 from src.components.layout import create_layout
-from src.data.loader import load_transaction_data
-
+from dash_pyfolio.portfolio_data import Portfolio
 import yfinance as yf
 
 
 spy = yf.Ticker("SPY").history("max")
 spy.index = spy.index.tz_localize("utc")
-spy = spy.Close.pct_change()
+spy_ret = spy.Close.pct_change()
 
-fb = yf.Ticker("IBM")
-history = fb.history("max")
-history.index = history.index.tz_localize("utc")
+pf_data = Portfolio(
+    name="JustTesting",
+    returns=spy_ret,
+    live_start_date="2000-1-1",
+)
 
-returns = history.Close.pct_change()
-
-
-DATA_PATH = "./data/transactions.csv"
 
 # load the data and create the data manager
-data = load_transaction_data(DATA_PATH)
 
 app = Dash(external_stylesheets=[BOOTSTRAP], use_pages=False)
 app.title = "dash-pyfolio"
 
 server = app.server
 
-app.layout = create_layout(app, data)
+app.layout = create_layout(app, pf_data)
 app.run(debug=True)

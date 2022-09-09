@@ -45,12 +45,13 @@ def plot_returns(portfolio: Portfolio) -> Figure:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
-        }
+        },
     )
     fig.update_xaxes(
         # dtick="M3",
         tickformat="%Y-%m-%d",
     )
     fig.update_yaxes(tickformat=",.2%")
+    fig.update_traces(hovertemplate="%{x}<br>%{y:,.2%}<extra></extra>")
 
     return fig
