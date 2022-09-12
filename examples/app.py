@@ -8,11 +8,11 @@ import yfinance as yf
 
 spy = yf.Ticker("SPY").history("max")
 spy.index = spy.index.tz_localize("utc")
-spy_ret = spy.Close.pct_change()
+spy_ret = spy.Close.pct_change().to_frame().rename({"Close": "SPY"}, axis=1)
 
 pf_data = Portfolio(
-    name="Test Portfolio",
     returns=spy_ret,
+    # portfolio_name="Test Portfolio",
     live_start_date="2000-1-1",
 )
 

@@ -20,20 +20,28 @@ def _center_title(fig: Figure, title: str = "") -> None:
 
 
 def plot_returns(portfolio: Portfolio) -> Figure:
+    fig = go.Figure()
 
-    fig = go.Figure(
-        data=go.Scatter(
-            x=portfolio.back_returns.index,
-            y=portfolio.back_returns.values,
-            mode="lines",
-            line_color="#006400",
-        ),
-    )
     if portfolio.live_start_date is not None:
+        back_ret = portfolio.returns.loc[
+            portfolio.returns.index < portfolio.live_start_date
+        ]
+        live_ret = portfolio.returns.loc[
+            portfolio.returns.index >= portfolio.live_start_date
+        ]
         fig.add_trace(
             go.Scatter(
-                x=portfolio.live_returns.index,
-                y=portfolio.live_returns.values,
+                x=back_ret[portfolio.portfolio_name].index,
+                y=back_ret[portfolio.portfolio_name].values,
+                mode="lines",
+                line_color="#006400",
+            ),
+        )
+
+        fig.add_trace(
+            go.Scatter(
+                x=live_ret[portfolio.portfolio_name].index,
+                y=live_ret[portfolio.portfolio_name].values,
                 mode="lines",
                 line=dict(color="#ff0000"),
             ),
@@ -53,19 +61,28 @@ def plot_returns(portfolio: Portfolio) -> Figure:
 
 
 def plot_rolling_returns(portfolio: Portfolio) -> Figure:
-    fig = go.Figure(
-        data=go.Scatter(
-            x=portfolio.cum_back_returns.index,
-            y=portfolio.cum_back_returns.values,
-            mode="lines",
-            line_color="#006400",
-        ),
-    )
+    fig = go.Figure()
+
     if portfolio.live_start_date is not None:
+        cum_back_ret = portfolio.cum_returns.loc[
+            portfolio.cum_returns.index < portfolio.live_start_date
+        ]
+        cum_live_ret = portfolio.cum_returns.loc[
+            portfolio.cum_returns.index >= portfolio.live_start_date
+        ]
+
         fig.add_trace(
             go.Scatter(
-                x=portfolio.cum_live_returns.index,
-                y=portfolio.cum_live_returns.values,
+                x=cum_back_ret[portfolio.portfolio_name].index,
+                y=cum_back_ret[portfolio.portfolio_name].values,
+                mode="lines",
+                line_color="#006400",
+            ),
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=cum_live_ret[portfolio.portfolio_name].index,
+                y=cum_live_ret[portfolio.portfolio_name].values,
                 mode="lines",
                 line=dict(color="#ff0000"),
             ),
@@ -99,7 +116,7 @@ def plot_rolling_returns(portfolio: Portfolio) -> Figure:
 
 
 def plot_drawdown_underwater(portfolio: Portfolio) -> Figure:
-    df_cum_rets = portfolio.cum_returns
+    df_cum_rets = portfolio.cum_returns[portfolio.portfolio_name]
     running_max = np.maximum.accumulate(df_cum_rets)
     underwater = -((running_max - df_cum_rets) / running_max)
 
@@ -121,7 +138,9 @@ def plot_drawdown_underwater(portfolio: Portfolio) -> Figure:
 
 
 def plot_monthly_returns_heatmap(portfolio: Portfolio) -> Figure:
-    monthly_ret_table = ep.aggregate_returns(portfolio.returns, "monthly")
+    monthly_ret_table = ep.aggregate_returns(
+        portfolio.returns[portfolio.portfolio_name], "monthly"
+    )
     monthly_ret_table = monthly_ret_table.unstack().round(3)
 
     monthly_ret_table.rename(
@@ -160,8 +179,8 @@ def plot_rolling_volatility(
 
     fig = go.Figure(
         data=go.Scatter(
-            x=rolling_vol_ts.index,
-            y=rolling_vol_ts.values,
+            x=rolling_vol_ts[portfolio.portfolio_name].index,
+            y=rolling_vol_ts[portfolio.portfolio_name].values,
             mode="lines",
             line_color="orangered",
         ),
