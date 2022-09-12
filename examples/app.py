@@ -1,7 +1,7 @@
 from dash import Dash
 from dash_bootstrap_components.themes import BOOTSTRAP
 
-from src.components.layout import create_layout
+from dash_pyfolio.components.layout import create_layout
 from dash_pyfolio.portfolio_data import Portfolio
 import yfinance as yf
 
@@ -11,7 +11,7 @@ spy.index = spy.index.tz_localize("utc")
 spy_ret = spy.Close.pct_change()
 
 pf_data = Portfolio(
-    name="JustTesting",
+    name="Test Portfolio",
     returns=spy_ret,
     live_start_date="2000-1-1",
 )

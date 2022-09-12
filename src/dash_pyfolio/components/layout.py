@@ -1,8 +1,14 @@
 from dash import Dash, html
 import dash_bootstrap_components as dbc
 from dash_pyfolio.portfolio_data import Portfolio
-from src.components.base import navbar
-from src.components.charts import returns_chart
+from dash_pyfolio.components.base import navbar
+from dash_pyfolio.components.charts import (
+    returns_chart,
+    cumulative_returns_chart,
+    rolling_volatility_chart,
+    drawdown_chart,
+    returns_heatmap,
+)
 from . import ids
 
 
@@ -16,13 +22,16 @@ def create_layout(
         children=[
             navbar.render(app),
             html.Hr(),
-            html.Hr(),
             dbc.Tabs(
                 [
                     dbc.Tab(
                         label="First Chart",
                         children=[
                             returns_chart.render(app, pf_data),
+                            cumulative_returns_chart.render(app, pf_data),
+                            drawdown_chart.render(app, pf_data),
+                            returns_heatmap.render(app, pf_data),
+                            rolling_volatility_chart.render(app, pf_data),
                         ],
                     ),
                     # dbc.Tab(
