@@ -9,16 +9,12 @@ from .. import ids
 def render(app: Dash, pf_data) -> html.Div:
     @app.callback(
         Output(ids.DRAWDOWN_RETURNS_CHART, "children"),
-        Input(ids.DASH_APPLICATION, "children"),
+        Input(ids.DASH_APPLICATION, "value"),
     )
     def update_drawdown_chart(value) -> html.Div:
-        fig = plot_drawdown_underwater(pf_data)
-        return html.Div(
-            dcc.Graph(
-                figure=fig,
-                config={"displaylogo": False},
-            ),
-            id=ids.DRAWDOWN_RETURNS_CHART,
+        return dcc.Graph(
+            figure=plot_drawdown_underwater(pf_data),
+            config={"displaylogo": False},
         )
 
     return html.Div(id=ids.DRAWDOWN_RETURNS_CHART)

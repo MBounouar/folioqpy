@@ -1,4 +1,4 @@
-from dash import Dash, html
+from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 from dash_pyfolio.portfolio_data import Portfolio
 from dash_pyfolio.components.base import navbar
@@ -8,6 +8,7 @@ from dash_pyfolio.components.charts import (
     rolling_volatility_chart,
     drawdown_chart,
     returns_heatmap,
+    monthly_returns_dist,
 )
 from . import ids
 
@@ -17,9 +18,8 @@ def create_layout(
     pf_data: Portfolio,
 ) -> html.Div:
     return html.Div(
-        className="app-div",
-        id=ids.DASH_APPLICATION,
         children=[
+            dcc.Input(id=ids.DASH_APPLICATION, value="dummy"),
             navbar.render(app),
             html.Hr(),
             dbc.Tabs(
@@ -32,6 +32,7 @@ def create_layout(
                             drawdown_chart.render(app, pf_data),
                             returns_heatmap.render(app, pf_data),
                             rolling_volatility_chart.render(app, pf_data),
+                            monthly_returns_dist.render(app, pf_data),
                         ],
                     ),
                     # dbc.Tab(
