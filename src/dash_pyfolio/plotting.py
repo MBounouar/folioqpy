@@ -30,6 +30,7 @@ def plot_returns(portfolio: Portfolio) -> go.Figure:
         ]
         fig.add_trace(
             go.Scatter(
+                meta=portfolio.portfolio_name,
                 x=back_ret[portfolio.portfolio_name].index,
                 y=back_ret[portfolio.portfolio_name].values,
                 mode="lines",
@@ -39,6 +40,7 @@ def plot_returns(portfolio: Portfolio) -> go.Figure:
 
         fig.add_trace(
             go.Scatter(
+                meta=portfolio.portfolio_name,
                 x=live_ret[portfolio.portfolio_name].index,
                 y=live_ret[portfolio.portfolio_name].values,
                 mode="lines",
@@ -54,7 +56,9 @@ def plot_returns(portfolio: Portfolio) -> go.Figure:
         # tickformat="%Y-%m-%d",
     )
     fig.update_yaxes(tickformat=",.1%")
-    fig.update_traces(hovertemplate="(%{x:'%Y-%m-%d'}, %{y:,.2%}<extra></extra>)")
+    fig.update_traces(
+        hovertemplate="(%{x:'%Y-%m-%d'}, %{y:,.2%}<extra>%{meta}</extra>)"
+    )
 
     return fig
 
