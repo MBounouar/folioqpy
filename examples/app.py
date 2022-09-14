@@ -1,11 +1,10 @@
+import pandas as pd
+import yfinance as yf
 from dash import Dash
 from dash_bootstrap_components.themes import BOOTSTRAP
-
-from dash_pyfolio.components.layout import create_layout
 from dash_pyfolio.portfolio_data import Portfolio
-import yfinance as yf
-import pandas as pd
 
+from components.layout import create_layout
 
 spy = yf.Ticker("META").history("max")
 aapl = yf.Ticker("IBM").history("max")

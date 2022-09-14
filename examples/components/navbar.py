@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from dash import Dash, html
 
-from .. import ids
+from . import ids
 
 
 def render(app: Dash) -> html.Div:
@@ -28,8 +28,8 @@ def render(app: Dash) -> html.Div:
                         # align="center",
                         # className="g-0",
                     ),
-                    # href="https://plotly.com",
-                    # style={"textDecoration": "none"},
+                    href="https://github.com/MBounouar/dash-pyfolio",
+                    style={"textDecoration": "none"},
                 ),
                 dbc.NavbarToggler(id=ids.NAVBAR_TOGGLER, n_clicks=0),
                 dbc.Collapse(

@@ -3,6 +3,7 @@ NAVBAR_COLLAPSE = "navbar-collapse"
 NAVBAR_TOGGLER = "navbar-toggler"
 
 # Charts
+ANNUAL_RETURNS_BAR_CHART = "annual-returns-bar-chart"
 RETURNS_CHART = "returns-chart"
 CUMULATIVE_RETURNS_CHART = "cumulative-returns-chart"
 DRAWDOWN_RETURNS_CHART = "drawdown-returns-chart"
