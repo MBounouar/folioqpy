@@ -31,6 +31,10 @@ def create_layout(
                                 output_id=ids.RETURNS_CHART,
                             ),
                             plot_render(
+                                dplt.plot_annual_returns,
+                                output_id=ids.ANNUAL_RETURNS_BAR_CHART,
+                            ),
+                            plot_render(
                                 dplt.plot_drawdown_underwater,
                                 output_id=ids.DRAWDOWN_RETURNS_CHART,
                             ),
@@ -47,7 +51,7 @@ def create_layout(
                                 output_id=ids.MONNTLY_RETURNS_DIST,
                             ),
                             plot_render(
-                                dplt.plot_rolling_returns,
+                                dplt.plot_cumulative_returns,
                                 output_id=ids.CUMULATIVE_RETURNS_CHART,
                             ),
                         ],
