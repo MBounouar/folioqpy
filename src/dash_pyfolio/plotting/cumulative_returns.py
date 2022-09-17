@@ -5,7 +5,7 @@ from dash_pyfolio.portfolio_data import Portfolio
 def plot_cumulative_returns(portfolio: Portfolio) -> go.Figure:
     fig = go.Figure()
 
-    for i, name in enumerate(portfolio.cum_returns.columns):
+    for _, name in enumerate(portfolio.cum_returns.columns):
         if portfolio.live_start_date is not None and name == portfolio.portfolio_name:
             cum_back_ret = portfolio.cum_returns.loc[
                 portfolio.cum_returns.index < portfolio.live_start_date

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-import abc
+# import abc
 from typing import Union
 import pandas as pd
 from dash_pyfolio.utils import get_utc_timestamp
@@ -13,7 +13,7 @@ import empyrical as ep
 #         ...
 
 
-class Portfolio(abc.ABC):
+class Portfolio:
     pass
 
 
