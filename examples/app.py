@@ -2,7 +2,7 @@ import pandas as pd
 import yfinance as yf
 from dash import Dash
 from dash_bootstrap_components.themes import BOOTSTRAP
-from dash_pyfolio.portfolio_data import Portfolio
+from dash_pyfolio.portfolio_data import SimplePortfolio
 
 from components.layout import create_layout
 
@@ -16,7 +16,7 @@ aapl_ret = aapl.Close.pct_change().to_frame().rename({"Close": "AAPL"}, axis=1)
 
 df = pd.concat([spy_ret, aapl_ret], axis=1).dropna(how="any", axis=0)
 
-pf_data = Portfolio(
+pf_data = SimplePortfolio(
     returns=df.loc["2019":],
     # portfolio_name="Test Portfolio",
     live_start_date="2020-1-1",
@@ -24,7 +24,6 @@ pf_data = Portfolio(
 
 
 # load the data and create the data manager
-
 app = Dash(external_stylesheets=[BOOTSTRAP], use_pages=False)
 app.title = "dash-pyfolio"
 

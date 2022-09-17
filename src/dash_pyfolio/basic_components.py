@@ -1,14 +1,16 @@
 from typing import Any, Union
-
+import plotly.graph_objects as go
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
 from toolz import curry
+from dash import dash_table
+
 
 from dash_pyfolio.portfolio_data import Portfolio
 
 
 @curry
-def basic_plot_render(
+def simple_render(
     app: Dash,
     pf_data: Portfolio,
     fn: Any,
@@ -20,10 +22,35 @@ def basic_plot_render(
         Output(output_id, "children"),
         Input(input_id, "value"),
     )
-    def update_plot(value) -> html.Div:
-        return dcc.Graph(
-            figure=fn(pf_data, **kwargs),
-            config={"displaylogo": False},
-        )
+    def update_component(value) -> html.Div:
+        obj = fn(pf_data, **kwargs)
+        if isinstance(obj, go.Figure):
+            return dcc.Graph(
+                figure=obj,
+                config={"displaylogo": False},
+            )
+        elif isinstance(obj, dash_table.DataTable):
+            return obj
+        else:
+            raise Exception
+
+    return html.Div(id=output_id)
+
+
+@curry
+def basic_table_render(
+    app: Dash,
+    pf_data: Portfolio,
+    fn: Any,
+    output_id: str,
+    input_id: str,
+    **kwargs: Union[str, int],
+) -> html.Div:
+    @app.callback(
+        Output(output_id, "children"),
+        Input(input_id, "value"),
+    )
+    def update_table(value) -> html.Div:
+        return fn(pf_data, **kwargs)
 
     return html.Div(id=output_id)

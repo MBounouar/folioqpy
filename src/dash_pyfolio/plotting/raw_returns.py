@@ -51,7 +51,7 @@ def plot_returns(portfolio: Portfolio) -> go.Figure:
 
     fig.update_layout(
         title=dict(
-            text="Returns",
+            text="Daily Returns",
             x=0.5,
             y=0.85,
             xanchor="center",

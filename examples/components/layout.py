@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 from dash_pyfolio.portfolio_data import Portfolio
 from . import navbar
 import dash_pyfolio.plotting as dplt
-from dash_pyfolio.basic_components import basic_plot_render
+from dash_pyfolio.basic_components import simple_render
 
 from . import ids
 
@@ -13,7 +13,7 @@ def create_layout(
     pf_data: Portfolio,
 ) -> html.Div:
     # This is a vary basic way to render plots using currying
-    plot_render = basic_plot_render(app, pf_data, input_id=ids.DASH_APPLICATION)
+    render = simple_render(app, pf_data, input_id=ids.DASH_APPLICATION)
 
     return html.Div(
         children=[
@@ -24,33 +24,34 @@ def create_layout(
             dbc.Tabs(
                 [
                     dbc.Tab(
-                        label="First Chart",
+                        label="Overview",
                         children=[
-                            plot_render(
+                            render(dplt.show_perf_stats, output_id="asdfsafd"),
+                            render(
                                 dplt.plot_returns,
                                 output_id=ids.RETURNS_CHART,
                             ),
-                            plot_render(
+                            render(
                                 dplt.plot_annual_returns,
                                 output_id=ids.ANNUAL_RETURNS_BAR_CHART,
                             ),
-                            plot_render(
+                            render(
                                 dplt.plot_drawdown_underwater,
                                 output_id=ids.DRAWDOWN_RETURNS_CHART,
                             ),
-                            plot_render(
+                            render(
                                 dplt.plot_monthly_returns_heatmap,
                                 output_id=ids.MONTHLY_RETURNS_HEATMAP,
                             ),
-                            plot_render(
+                            render(
                                 dplt.plot_rolling_volatility,
                                 output_id=ids.ROLLING_VOLATILITY_CHART,
                             ),
-                            plot_render(
+                            render(
                                 dplt.plot_monthly_returns_dist,
                                 output_id=ids.MONNTLY_RETURNS_DIST,
                             ),
-                            plot_render(
+                            render(
                                 dplt.plot_cumulative_returns,
                                 output_id=ids.CUMULATIVE_RETURNS_CHART,
                             ),
