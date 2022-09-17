@@ -1,6 +1,3 @@
-import pytest
-
-
 def test_dummy():
     a = "A"
     x = "A"
