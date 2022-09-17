@@ -5,9 +5,9 @@ import plotly.graph_objects as go
 
 def show_perf_stats(portfolio: Portfolio) -> go.Figure:
     df = perf_stats(portfolio)
-    stats_fmt  = [fmt for _, fmt in STAT_FUNC_NAMES.values()]
-    format = [[None]*len(df.index)]
-    
+    stats_fmt = [fmt for _, fmt in STAT_FUNC_NAMES.values()]
+    format = [[None] * len(df.index)]
+
     for _ in df.columns[1:]:
         format.append(stats_fmt)
 
@@ -35,10 +35,9 @@ def show_perf_stats(portfolio: Portfolio) -> go.Figure:
                 # prefix=[None] + ["$", "\u20BF"],
                 # suffix=[None] * 4,
                 # height=27,
-                fill=dict(color='white'),
+                fill=dict(color="white"),
                 # fill=dict(color=["rgb(235, 193, 238)", "rgba(228, 222, 249, 0.65)"]),
             ),
-        )
+        ),
     )
     return fig
-    

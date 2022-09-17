@@ -12,8 +12,10 @@ import empyrical as ep
 #     def live_start_date(self):
 #         ...
 
+
 class Portfolio(abc.ABC):
     pass
+
 
 @dataclass
 class SimplePortfolio(Portfolio):
