@@ -28,3 +28,4 @@ homepage = "https://github.com/MBounouar/dash-pyfolio"
 
 [tool.black]
 target-version = ['py39', 'py310']
+src = "./src ./tests"
