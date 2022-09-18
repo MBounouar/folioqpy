@@ -10,9 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: psf/black@stable
-        with:
-          options: "--check --diff"
-          src: "./src ./tests"
+        # with:
+        #   options: "--check --diff"
+        #   src: "./src ./tests"
       # - uses: actions/setup-python@v4.0.0
       #   with:
       #     python-version: "3.9"
