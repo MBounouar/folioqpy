@@ -1,10 +1,9 @@
 from typing import Any, Union
+
 import plotly.graph_objects as go
-from dash import Dash, dcc, html
+from dash import Dash, dash_table, dcc, html
 from dash.dependencies import Input, Output
 from toolz import curry
-from dash import dash_table
-
 
 from dash_pyfolio.portfolio_data import Portfolio
 

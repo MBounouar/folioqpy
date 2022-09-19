@@ -34,34 +34,35 @@ def perf_stats(
     # transactions=None,
     # turnover_denom="AGB",
 ) -> pd.Series:
-    """
-    Calculates various performance metrics of a strategy, for use in
-    plotting.show_perf_stats.
+    """Fetches rows from a Smalltable.
 
-    Parameters
-    ----------
-    returns : pd.Series
-        Daily returns of the strategy, noncumulative.
-         - See full explanation in tears.create_full_tear_sheet.
-    factor_returns : pd.Series, optional
-        Daily noncumulative returns of the benchmark factor to which betas are
-        computed. Usually a benchmark such as market returns.
-         - This is in the same style as returns.
-         - If None, do not compute alpha, beta, and information ratio.
-    positions : pd.DataFrame
-        Daily net position values.
-         - See full explanation in tears.create_full_tear_sheet.
-    transactions : pd.DataFrame
-        Prices and amounts of executed trades. One row per trade.
-        - See full explanation in tears.create_full_tear_sheet.
-    turnover_denom : str
-        Either AGB or portfolio_value, default AGB.
-        - See full explanation in txn.get_turnover.
+    Retrieves rows pertaining to the given keys from the Table instance
+    represented by table_handle.  String keys will be UTF-8 encoded.
 
-    Returns
-    -------
-    pd.Series
-        Performance metrics.
+    Args:
+      table_handle:
+        An open `smalltable.Table` instance.
+      keys:
+        A sequence of strings representing the key of each table row to
+        fetch.  String keys will be UTF-8 encoded.
+      require_all_keys:
+        If True only rows with values set for all keys will be returned.
+
+    Returns:
+      A dict mapping keys to the corresponding table row data
+      fetched. Each row is represented as a tuple of strings. For
+      example:
+
+      {b'Serak': ('Rigel VII', 'Preparer'),
+       b'Zim': ('Irk', 'Invader'),
+       b'Lrrr': ('Omicron Persei 8', 'Emperor')}
+
+      Returned keys are always bytes.  If a key from the keys argument is
+      missing from the dictionary, then that row was not found in the
+      table (and require_all_keys must have been False).
+
+    Raises:
+      IOError: An error occurred accessing the smalltable.
     """
 
     stats = pd.DataFrame(
