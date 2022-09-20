@@ -9,12 +9,14 @@ dash-bootstrap-components = "*"
 pandas = "*"
 plotly = "*"
 empyrical-reloaded = "*"
+scipy = "*"
 
 [dev-packages]
 black = "*"
 flake8 = "*"
 yfinance = "*"
 pytest = "*"
+flake8-bugbear = "*"
 
 [requires]
 python_version = "3.9"
