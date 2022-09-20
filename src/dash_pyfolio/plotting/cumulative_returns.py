@@ -1,8 +1,13 @@
 import plotly.graph_objects as go
-from dash_pyfolio.portfolio_data import Portfolio
+from ..portfolio_data import Portfolio
+from ..utils import forecast_cone_bootstrap
 
 
-def plot_cumulative_returns(portfolio: Portfolio) -> go.Figure:
+def plot_cumulative_returns(
+    portfolio: Portfolio,
+    cone_std=(1, 1.5, 2.0),
+    cone_function=forecast_cone_bootstrap,
+) -> go.Figure:
     fig = go.Figure()
 
     for _, name in enumerate(portfolio.cum_returns.columns):
@@ -25,16 +30,27 @@ def plot_cumulative_returns(portfolio: Portfolio) -> go.Figure:
                     line_color="#006400",
                 ),
             )
-            fig.add_trace(
-                go.Scatter(
-                    name=f"{name}-Live",
-                    meta=f"{name}-Live",
-                    x=cum_live_ret.index,
-                    y=cum_live_ret.values,
-                    mode="lines",
-                    line=dict(color="#ff0000"),
-                ),
-            )
+            if len(cum_live_ret) > 0:
+                is_returns = portfolio.returns.loc[
+                    portfolio.returns.index < portfolio.live_start_date
+                ][name]
+                cone_bounds = cone_function(
+                    is_returns,
+                    len(cum_live_ret),
+                    cone_std=cone_std,
+                    starting_value=cum_back_ret.values[-1],
+                )
+                fig.add_trace(
+                    go.Scatter(
+                        name=f"{name}-Live",
+                        meta=f"{name}-Live",
+                        x=cum_live_ret.index,
+                        y=cum_live_ret.values,
+                        mode="lines",
+                        line=dict(color="#ff0000"),
+                    ),
+                )
+
             continue
 
         fig.add_trace(

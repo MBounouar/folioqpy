@@ -26,7 +26,12 @@ def create_layout(
                     dbc.Tab(
                         label="Overview",
                         children=[
-                            render(dplt.show_perf_stats, output_id="asdfsafd"),
+                            render(
+                                dplt.show_perf_stats, output_id=ids.PERF_STATS_TABLE
+                            ),
+                            render(
+                                dplt.show_top_drawdown, output_id=ids.TOP_DRAWDOWN_TABLE
+                            ),
                             render(
                                 dplt.plot_returns,
                                 output_id=ids.RETURNS_CHART,

@@ -5,6 +5,7 @@ from .returns_distribution import plot_annual_returns, plot_monthly_returns_dist
 from .returns_heatmap import plot_monthly_returns_heatmap
 from .rolling_volatility import plot_rolling_volatility
 from .stats_table import show_perf_stats
+from .drawdown_table import show_top_drawdown
 
 __all__ = [
     "plot_drawdown_underwater",
@@ -15,4 +16,5 @@ __all__ = [
     "plot_returns",
     "plot_cumulative_returns",
     "show_perf_stats",
+    "show_top_drawdown",
 ]

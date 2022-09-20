@@ -2,6 +2,7 @@ import empyrical as ep
 import scipy as sp
 import pandas as pd
 import numpy as np
+from typing import Union
 
 from .portfolio_data import Portfolio
 from .stats import value_at_risk
@@ -14,7 +15,7 @@ STAT_FUNC_NAMES = {
     "Sharpe ratio": [ep.sharpe_ratio, ".2f"],
     "Calmar ratio": [ep.calmar_ratio, ".2f"],
     "Stability": [ep.stability_of_timeseries, ".2f"],
-    "Max drawdown": [ep.max_drawdown, ".2f"],
+    "Max drawdown": [ep.max_drawdown, ".1%"],
     "Omega ratio": [ep.omega_ratio, ".2f"],
     "Sortino ratio": [ep.sortino_ratio, ".2f"],
     "Skew": [sp.stats.skew, ".2f"],
@@ -29,7 +30,6 @@ STAT_FUNC_NAMES = {
 
 def perf_stats(
     portfolio: Portfolio,
-    # returns,
     # factor_returns=None,
     # positions=None,
     # transactions=None,
@@ -105,7 +105,6 @@ def get_max_drawdown_underwater(underwater):
     return peak, valley, recovery
 
 
-# def get_top_drawdowns(returns, top=10):
 def get_top_drawdowns(df_cum, top=10):
     """
     Finds top drawdowns, sorted by drawdown amount.
@@ -138,7 +137,6 @@ def get_top_drawdowns(df_cum, top=10):
             underwater = underwater.loc[:peak]
 
         drawdowns.append((peak, valley, recovery))
-        # if (len(returns) == 0) or (len(underwater) == 0) or (np.min(underwater) == 0):
         if (len(underwater) == 0) or (np.min(underwater) == 0):
             break
 
@@ -157,10 +155,9 @@ def top_drawdown_table(portfolio: Portfolio, top: int = 5) -> pd.DataFrame:
     """
     returns = portfolio.returns[portfolio.portfolio_name]
     df_cum = ep.cum_returns(returns, 1.0)
-    # drawdown_periods = get_top_drawdowns(returns, top=top)
     drawdown_periods = get_top_drawdowns(df_cum, top=top)
     df_drawdowns = pd.DataFrame(
-        index=range(top),
+        index=range(top, 1),
         columns=[
             "Net drawdown in %",
             "Peak date",
@@ -170,27 +167,73 @@ def top_drawdown_table(portfolio: Portfolio, top: int = 5) -> pd.DataFrame:
         ],
     )
 
-    for i, (peak, valley, recovery) in enumerate(drawdown_periods):
+    for i, (peak, valley, recovery) in enumerate(drawdown_periods, 1):
         if pd.isnull(recovery):
+            df_drawdowns.loc[i, "Recovery date"] = recovery
             df_drawdowns.loc[i, "Duration"] = np.nan
         else:
-            df_drawdowns.loc[i, "Duration"] = len(
-                pd.date_range(peak, recovery, freq="B")
+            df_drawdowns.loc[i, "Recovery date"] = recovery.strftime("%Y-%m-%d")
+            # df_drawdowns.loc[i, "Duration"] = len(pd.date_range(peak, recovery, freq="B"))
+
+            # we add one day to replicate the behaviour
+            df_drawdowns.loc[i, "Duration"] = 1 + np.busday_count(
+                peak.asm8.astype("<M8[D]"), recovery.asm8.astype("<M8[D]")
             )
-        df_drawdowns.loc[i, "Peak date"] = peak.to_pydatetime().strftime("%Y-%m-%d")
-        df_drawdowns.loc[i, "Valley date"] = valley.to_pydatetime().strftime("%Y-%m-%d")
-        if isinstance(recovery, float):
-            df_drawdowns.loc[i, "Recovery date"] = recovery
-        else:
-            df_drawdowns.loc[i, "Recovery date"] = recovery.to_pydatetime().strftime(
-                "%Y-%m-%d"
-            )
+
+        df_drawdowns.loc[i, "Peak date"] = peak.strftime("%Y-%m-%d")
+        df_drawdowns.loc[i, "Valley date"] = valley.strftime("%Y-%m-%d")
+
         df_drawdowns.loc[i, "Net drawdown in %"] = (
-            (df_cum.loc[peak] - df_cum.loc[valley]) / df_cum.loc[peak]
-        ) * 100
+            df_cum.loc[peak] - df_cum.loc[valley]
+        ) / df_cum.loc[peak]
 
-    df_drawdowns["Peak date"] = pd.to_datetime(df_drawdowns["Peak date"])
-    df_drawdowns["Valley date"] = pd.to_datetime(df_drawdowns["Valley date"])
-    df_drawdowns["Recovery date"] = pd.to_datetime(df_drawdowns["Recovery date"])
-
+    df_drawdowns = df_drawdowns.rename_axis("Rank").reset_index()
     return df_drawdowns
+
+
+def drawdown_series(
+    returns: Union[np.ndarray, pd.Series], out: np.ndarray = None
+) -> Union[pd.Series, np.ndarray]:
+    """Determines the series of drawdown of a strategy.
+
+    Args:
+        returns (Union[np.ndarray, pd.Series]):  Daily returns of the strategy, noncumulative.
+        out (np.ndarray, optional): Array to use as output buffer. Defaults to None.
+
+    Returns:
+        Union[pd.Series, np.ndarray]: drawdown_series
+    """
+    allocated_output = out is None
+    if allocated_output:
+        out = np.empty(
+            (returns.shape[0] + 1,) + returns.shape[1:],
+            dtype="float64",
+        )
+
+    returns_1d = returns.ndim == 1
+
+    if len(returns) < 1:
+        out[()] = np.nan
+        if returns_1d:
+            out = out.item()
+        return out
+
+    returns_array = np.asanyarray(returns)
+
+    out[0] = start = 100
+    ep.cum_returns(returns_array, starting_value=start, out=out[1:])
+
+    max_return = np.fmax.accumulate(out, axis=0)
+
+    np.divide((out - max_return), max_return, out=out)
+
+    if returns.ndim == 1 and isinstance(returns, pd.Series):
+        out = pd.Series(out[1:], index=returns.index)
+    elif isinstance(returns, pd.DataFrame):
+        out = pd.DataFrame(
+            out[1:],
+            index=returns.index,
+            columns=returns.columns,
+        )
+
+    return out
