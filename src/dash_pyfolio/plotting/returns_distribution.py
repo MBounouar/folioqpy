@@ -69,15 +69,6 @@ def plot_annual_returns(portfolio: Portfolio) -> go.Figure:
             )
         )
 
-    fig.update_yaxes(
-        dict(title="Year"),
-    )
-
-    fig.update_xaxes(
-        dict(title="Returns"),
-        tickformat=",.1%",
-        ticks="outside",
-    )
     fig.add_vline(
         x=0,
         line_width=2,
@@ -85,6 +76,12 @@ def plot_annual_returns(portfolio: Portfolio) -> go.Figure:
     )
 
     fig.update_layout(
+        xaxis=dict(
+            title="Returns",
+            tickformat=",.1%",
+            ticks="outside",
+        ),
+        yaxis=dict(title="Year"),
         title=dict(
             text="Annual Returns",
             x=0.5,

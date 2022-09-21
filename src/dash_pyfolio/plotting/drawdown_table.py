@@ -5,6 +5,11 @@ import plotly.graph_objects as go
 
 def show_top_drawdown(portfolio: Portfolio) -> go.Figure:
     df = top_drawdown_table(portfolio, top=5)
+
+    df[["Peak date", "Valley date", "Recovery date"]] = df[
+        ["Peak date", "Valley date", "Recovery date"]
+    ].apply(lambda x: x.dt.strftime("%Y-%m-%d"))
+
     format = [None, ".2%", None, None, None, None]
 
     fig = go.Figure(

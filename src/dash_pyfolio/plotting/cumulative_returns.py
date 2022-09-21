@@ -129,14 +129,17 @@ def plot_cumulative_returns(
             bordercolor="#DDDDDD",
             borderwidth=1,
         ),
+        xaxis=dict(
+            # dtick="M3",
+            tickformat="%Y-%m-%d",
+            ticks="outside",
+            linecolor="rgb(204, 204, 204)",
+        ),
+        yaxis=dict(
+            tickformat=".2f",
+        ),
     )
 
-    fig.update_xaxes(
-        # dtick="M3",
-        tickformat="%Y-%m-%d",
-        ticks="outside",
-    )
-    fig.update_yaxes(tickformat=".2f")
     # fig.update_traces(hovertemplate="%{x}  %{y:.2f}<extra></extra>")
     # fig.update_traces(hovertemplate="(%{x:'%Y-%m-%d'}, %{y:.2f}<extra>%{meta}</extra>)")
 

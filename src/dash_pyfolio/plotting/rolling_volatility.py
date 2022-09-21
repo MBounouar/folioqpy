@@ -52,14 +52,15 @@ def plot_rolling_volatility(
             bordercolor="#DDDDDD",
             borderwidth=1,
         ),
+        xaxis=dict(
+            tickformat="%Y-%m",
+            ticks="outside",
+        ),
+        yaxis=dict(
+            tickformat=",.1%",
+        ),
     )
 
     fig.update_traces(hovertemplate="(%{x:'%Y-%m-%d'}, %{y:.2f}<extra>%{meta}</extra>)")
-    fig.update_xaxes(
-        tickformat="%Y-%m",
-        ticks="outside",
-    )
-    fig.update_yaxes(
-        tickformat=",.1%",
-    )
+
     return fig

@@ -67,13 +67,13 @@ def plot_returns(portfolio: Portfolio) -> go.Figure:
             bordercolor="#DDDDDD",
             borderwidth=1,
         ),
+        xaxis=dict(
+            tickformat="%Y-%m",
+            ticks="outside",
+        ),
+        yaxis=dict(tickformat=",.1%"),
     )
 
-    fig.update_xaxes(
-        tickformat="%Y-%m",
-        ticks="outside",
-    )
-    fig.update_yaxes(tickformat=",.1%")
     fig.update_traces(
         hovertemplate="(%{x:'%Y-%m-%d'}, %{y:,.2%}<extra>%{meta}</extra>)"
     )

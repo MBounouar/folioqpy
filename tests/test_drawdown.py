@@ -17,7 +17,7 @@ class TestDrawdown:
         rets = drawdown_df.pct_change()
         pf = SimplePortfolio(returns=rets)
         drawdowns = top_drawdown_table(pf, top=1)
-        assert drawdowns.loc[0, "Net drawdown in %"] == 25
+        assert drawdowns.loc[0, "Net drawdown in %"] == 0.25
 
     @pytest.mark.parametrize(
         "first_expected_peak,first_expected_valley,first_expected_recovery,first_net_drawdown,second_expected_peak,second_expected_valley,second_expected_recovery,second_net_drawdown",
@@ -26,11 +26,11 @@ class TestDrawdown:
                 pd.Timestamp("2000-01-08"),
                 pd.Timestamp("2000-01-09"),
                 pd.Timestamp("2000-01-13"),
-                50,
+                0.5,
                 pd.Timestamp("2000-01-20"),
                 pd.Timestamp("2000-01-22"),
                 None,
-                40,
+                0.4,
             )
         ],
     )
@@ -78,13 +78,12 @@ class TestDrawdown:
         pf = SimplePortfolio(returns=rets)
         drawdowns = top_drawdown_table(pf, top=2)
 
-        assert np.round(drawdowns.loc[0, "Net drawdown in %"]) == first_net_drawdown
+        assert drawdowns.loc[0, "Net drawdown in %"] == first_net_drawdown
 
         assert drawdowns.loc[0, "Peak date"] == first_expected_peak
         assert drawdowns.loc[0, "Valley date"] == first_expected_valley
         assert drawdowns.loc[0, "Recovery date"] == first_expected_recovery
-
-        assert np.round(drawdowns.loc[1, "Net drawdown in %"]) == second_net_drawdown
+        assert drawdowns.loc[1, "Net drawdown in %"] == second_net_drawdown
         assert drawdowns.loc[1, "Peak date"] == second_expected_peak
         assert drawdowns.loc[1, "Valley date"] == second_expected_valley
         assert pd.isnull(drawdowns.loc[1, "Recovery date"])

@@ -172,22 +172,27 @@ def top_drawdown_table(portfolio: Portfolio, top: int = 5) -> pd.DataFrame:
             df_drawdowns.loc[i, "Recovery date"] = recovery
             df_drawdowns.loc[i, "Duration"] = np.nan
         else:
-            df_drawdowns.loc[i, "Recovery date"] = recovery.strftime("%Y-%m-%d")
-            # df_drawdowns.loc[i, "Duration"] = len(pd.date_range(peak, recovery, freq="B"))
+            df_drawdowns.loc[i, "Recovery date"] = recovery  # .strftime("%Y-%m-%d")
 
             # we add one day to replicate the behaviour
             df_drawdowns.loc[i, "Duration"] = 1 + np.busday_count(
                 peak.asm8.astype("<M8[D]"), recovery.asm8.astype("<M8[D]")
             )
+            # df_drawdowns.loc[i, "Duration"] = len(pd.date_range(peak, recovery, freq="B"))
 
-        df_drawdowns.loc[i, "Peak date"] = peak.strftime("%Y-%m-%d")
-        df_drawdowns.loc[i, "Valley date"] = valley.strftime("%Y-%m-%d")
+        df_drawdowns.loc[i, "Peak date"] = peak  # .strftime("%Y-%m-%d")
+        df_drawdowns.loc[i, "Valley date"] = valley  # .strftime("%Y-%m-%d")
 
         df_drawdowns.loc[i, "Net drawdown in %"] = (
             df_cum.loc[peak] - df_cum.loc[valley]
         ) / df_cum.loc[peak]
 
     df_drawdowns = df_drawdowns.rename_axis("Rank").reset_index()
+
+    df_drawdowns[["Peak date", "Valley date", "Recovery date"]] = df_drawdowns[
+        ["Peak date", "Valley date", "Recovery date"]
+    ].astype("datetime64")
+
     return df_drawdowns
 
 

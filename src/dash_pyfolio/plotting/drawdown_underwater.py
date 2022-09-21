@@ -24,15 +24,15 @@ def plot_drawdown_underwater(portfolio: Portfolio) -> go.Figure:
             ),
         )
 
-    fig.update_xaxes(
-        tickformat="%Y-%m",
-        ticks="outside",
-    )
-    fig.update_yaxes(tickformat=",.1%")
     fig.update_traces(
         hovertemplate="(%{x:'%Y-%m-%d'}, %{y:,.2%}<extra>%{meta}</extra>)"
     )
     fig.update_layout(
+        xaxis=dict(
+            tickformat="%Y-%m",
+            ticks="outside",
+        ),
+        yaxis=dict(tickformat=",.1%"),
         title=dict(
             text="Underwater Plot",
             x=0.5,
