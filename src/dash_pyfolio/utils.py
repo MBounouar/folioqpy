@@ -150,7 +150,9 @@ def forecast_cone_bootstrap(
     )
 
     cone_bounds = summarize_paths(
-        samples=samples, cone_std=cone_std, starting_value=starting_value
+        samples=samples,
+        cone_std=cone_std,
+        starting_value=starting_value,
     )
 
     return cone_bounds
