@@ -32,7 +32,10 @@ def plot_drawdown_underwater(portfolio: Portfolio) -> go.Figure:
             tickformat="%Y-%m",
             ticks="outside",
         ),
-        yaxis=dict(tickformat=",.1%"),
+        yaxis=dict(
+            tickformat=",.1%",
+            title="Drawdown",
+        ),
         title=dict(
             text="Underwater Plot",
             x=0.5,

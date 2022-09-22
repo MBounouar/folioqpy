@@ -57,6 +57,7 @@ def plot_rolling_volatility(
             ticks="outside",
         ),
         yaxis=dict(
+            title="Volatility %",
             tickformat=",.1%",
         ),
     )

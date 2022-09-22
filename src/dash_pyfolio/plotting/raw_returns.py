@@ -71,7 +71,10 @@ def plot_returns(portfolio: Portfolio) -> go.Figure:
             tickformat="%Y-%m",
             ticks="outside",
         ),
-        yaxis=dict(tickformat=",.1%"),
+        yaxis=dict(
+            tickformat=",.1%",
+            title="Returns %",
+        ),
     )
 
     fig.update_traces(

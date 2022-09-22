@@ -7,11 +7,16 @@ import numpy as np
 
 def plot_cumulative_returns(
     portfolio: Portfolio,
-    cone_std=(1, 1.5, 2.0),
+    title: str = "",
+    logy: bool = False,
+    volatility_match: bool = False,
+    cone_std: tuple = (1, 1.5, 2.0),
     cone_function=forecast_cone_bootstrap,
 ) -> go.Figure:
 
     fig = go.Figure()
+
+    # title = f"Cumulative Returns{ if logy}"
 
     hovertemplate = "(%{x:'%Y-%m-%d'}, %{y:.2f}<extra>%{meta}</extra>)"
     for _, name in enumerate(portfolio.cum_returns.columns):
@@ -113,7 +118,7 @@ def plot_cumulative_returns(
         # hovermode="x unified",
         # hovermode="x",
         title=dict(
-            text="Cumulative Returns",
+            text=title,
             x=0.5,
             y=0.85,
             xanchor="center",
@@ -139,6 +144,11 @@ def plot_cumulative_returns(
             tickformat=".2f",
         ),
     )
+
+    if logy:
+        fig.layout.update_yaxes(
+            type="log",
+        )
 
     # fig.update_traces(hovertemplate="%{x}  %{y:.2f}<extra></extra>")
     # fig.update_traces(hovertemplate="(%{x:'%Y-%m-%d'}, %{y:.2f}<extra>%{meta}</extra>)")
