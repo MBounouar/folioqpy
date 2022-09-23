@@ -13,7 +13,11 @@ def create_layout(
     pf_data: Portfolio,
 ) -> html.Div:
     # This is a vary basic way to render plots using currying
-    render = simple_render(app, pf_data, input_id=ids.DASH_APPLICATION)
+    render = simple_render(
+        app,
+        pf_data,
+        input_id=ids.DASH_APPLICATION,
+    )
 
     return html.Div(
         children=[
@@ -27,13 +31,15 @@ def create_layout(
                         label="Overview",
                         children=[
                             render(
-                                dplt.show_perf_stats, output_id=ids.PERF_STATS_TABLE
+                                dplt.show_perf_stats,
+                                output_id=ids.PERF_STATS_TABLE,
                             ),
                             render(
-                                dplt.show_top_drawdown, output_id=ids.TOP_DRAWDOWN_TABLE
+                                dplt.show_top_drawdown,
+                                output_id=ids.TOP_DRAWDOWN_TABLE,
                             ),
                             render(
-                                dplt.plot_returns,
+                                dplt.plot_raw_returns,
                                 output_id=ids.RETURNS_CHART,
                             ),
                             render(
@@ -59,6 +65,19 @@ def create_layout(
                             render(
                                 dplt.plot_cumulative_returns,
                                 output_id=ids.CUMULATIVE_RETURNS_CHART,
+                                title="Cumulative Returns",
+                            ),
+                            render(
+                                dplt.plot_cumulative_returns,
+                                output_id=ids.CUMULATIVE_RETURNS_LOG_SCALE_CHART,
+                                title="Cumulative Returns on logarithmic scale",
+                                logy=True,
+                            ),
+                            render(
+                                dplt.plot_cumulative_returns,
+                                output_id=ids.CUMULATIVE_RETURNS_VOL_MATCH_BMK_CHART,
+                                title=f"Cumulative Returns volatility matched to benchmark {pf_data.benchmark_name}",
+                                volatility_match=True,
                             ),
                         ],
                     ),

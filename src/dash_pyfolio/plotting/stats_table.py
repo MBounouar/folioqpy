@@ -3,7 +3,7 @@ from ..stats_summary import perf_stats, STAT_FUNC_NAMES
 import plotly.graph_objects as go
 
 
-def show_perf_stats(portfolio: Portfolio) -> go.Figure:
+def show_perf_stats(portfolio: Portfolio, **kwargs) -> go.Figure:
     df = perf_stats(portfolio)
     stats_fmt = [fmt for _, fmt in STAT_FUNC_NAMES.values()]
     format = [[None] * len(df.index)]

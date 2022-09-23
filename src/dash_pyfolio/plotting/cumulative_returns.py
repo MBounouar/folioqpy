@@ -14,19 +14,36 @@ def plot_cumulative_returns(
     cone_function=forecast_cone_bootstrap,
 ) -> go.Figure:
 
+    pf_name = portfolio.portfolio_name
+    bmk_name = portfolio.benchmark_name
+
+    if volatility_match:
+        if portfolio.benchmark_name is None:
+            raise ValueError("volatility_match requires a benchmark/factor returns.")
+        else:
+            returns = portfolio.returns.copy()
+            bmark_vol = portfolio.returns[bmk_name].std()
+            pf_returns = (
+                portfolio.returns[pf_name] / portfolio.returns[pf_name].std()
+            ) * bmark_vol
+            returns[pf_name] = pf_returns
+            cum_returns = portfolio.cum_returns(returns, 1.0)
+    else:
+        cum_returns = portfolio.cum_returns(portfolio.returns, 1.0)
+
     fig = go.Figure()
 
     # title = f"Cumulative Returns{ if logy}"
 
     hovertemplate = "(%{x:'%Y-%m-%d'}, %{y:.2f}<extra>%{meta}</extra>)"
-    for _, name in enumerate(portfolio.cum_returns.columns):
-        if portfolio.live_start_date is not None and name == portfolio.portfolio_name:
-            cum_back_ret = portfolio.cum_returns.loc[
-                portfolio.cum_returns.index < portfolio.live_start_date
+    for _, name in enumerate(cum_returns.columns):
+        if portfolio.live_start_date is not None and name == pf_name:
+            cum_back_ret = cum_returns.loc[
+                cum_returns.index < portfolio.live_start_date
             ][name]
 
-            cum_live_ret = portfolio.cum_returns.loc[
-                portfolio.cum_returns.index >= portfolio.live_start_date
+            cum_live_ret = cum_returns.loc[
+                cum_returns.index >= portfolio.live_start_date
             ][name]
 
             fig.add_trace(
@@ -99,8 +116,8 @@ def plot_cumulative_returns(
             go.Scatter(
                 name=name,
                 meta=name,
-                x=portfolio.cum_returns[name].index,
-                y=portfolio.cum_returns[name].values,
+                x=cum_returns[name].index,
+                y=cum_returns[name].values,
                 mode="lines",
                 hovertemplate=hovertemplate,
                 # line=dict(color="grey"),
@@ -146,11 +163,6 @@ def plot_cumulative_returns(
     )
 
     if logy:
-        fig.layout.update_yaxes(
-            type="log",
-        )
-
-    # fig.update_traces(hovertemplate="%{x}  %{y:.2f}<extra></extra>")
-    # fig.update_traces(hovertemplate="(%{x:'%Y-%m-%d'}, %{y:.2f}<extra>%{meta}</extra>)")
+        fig.update_yaxes(type="log")
 
     return fig

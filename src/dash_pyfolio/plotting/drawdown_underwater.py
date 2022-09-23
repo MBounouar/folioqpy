@@ -2,11 +2,15 @@
 import numpy as np
 import plotly.graph_objects as go
 from dash_pyfolio.portfolio_data import Portfolio
+from typing import Any
 
 
-def plot_drawdown_underwater(portfolio: Portfolio) -> go.Figure:
+def plot_drawdown_underwater(
+    portfolio: Portfolio,
+    **kwargs: dict[str, Any],
+) -> go.Figure:
     fig = go.Figure()
-    df_cum_rets = portfolio.cum_returns
+    df_cum_rets = portfolio.cum_returns(portfolio.returns, 1.0)
     running_max = np.maximum.accumulate(df_cum_rets)
     underwater = -((running_max - df_cum_rets) / running_max)
 

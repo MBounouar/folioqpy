@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 from dash_pyfolio.portfolio_data import Portfolio
 
 
-def plot_returns(portfolio: Portfolio) -> go.Figure:
+def plot_raw_returns(portfolio: Portfolio, **kwargs) -> go.Figure:
     fig = go.Figure()
 
     for i, name in enumerate(portfolio.returns.columns):

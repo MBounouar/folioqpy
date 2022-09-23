@@ -15,7 +15,7 @@ def simple_render(
     fn: Any,
     output_id: str,
     input_id: str,
-    **kwargs: Union[str, int],
+    **kwargs: dict[str, Any],
 ) -> html.Div:
     @app.callback(
         Output(output_id, "children"),

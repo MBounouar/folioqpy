@@ -28,7 +28,7 @@ def get_utc_timestamp(
 def simulate_paths(
     is_returns: pd.Series,
     num_days: int,
-    starting_value=1,
+    starting_value: float = 1,
     num_samples: int = 1000,
     random_seed: Union[int, None] = None,
 ) -> np.ndarray:
@@ -57,7 +57,11 @@ def simulate_paths(
     return samples
 
 
-def summarize_paths(samples, cone_std=(1.0, 1.5, 2.0), starting_value=1.0):
+def summarize_paths(
+    samples: np.ndarray,
+    cone_std: tuple = (1.0, 1.5, 2.0),
+    starting_value: float = 1.0,
+) -> pd.DataFrame:
     """
     Gnerate the upper and lower bounds of an n standard deviation
     cone of forecasted cumulative returns.
@@ -96,13 +100,13 @@ def summarize_paths(samples, cone_std=(1.0, 1.5, 2.0), starting_value=1.0):
 
 
 def forecast_cone_bootstrap(
-    is_returns,
-    num_days,
-    cone_std=(1.0, 1.5, 2.0),
-    starting_value=1,
-    num_samples=1000,
-    random_seed=None,
-):
+    is_returns: pd.Series,
+    num_days: int,
+    cone_std: tuple = (1.0, 1.5, 2.0),
+    starting_value: float = 1,
+    num_samples: int = 1000,
+    random_seed: int = None,
+) -> pd.DataFrame:
     """
     Determines the upper and lower bounds of an n standard deviation
     cone of forecasted cumulative returns. Future cumulative mean and

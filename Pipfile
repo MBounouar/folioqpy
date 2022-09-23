@@ -18,6 +18,7 @@ yfinance = "*"
 pytest = "*"
 flake8-bugbear = "*"
 tox = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.9"

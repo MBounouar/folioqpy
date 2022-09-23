@@ -1,9 +1,13 @@
 import empyrical as ep
+from typing import Any
 import plotly.graph_objects as go
 from dash_pyfolio.portfolio_data import Portfolio
 
 
-def plot_monthly_returns_dist(portfolio: Portfolio) -> go.Figure:
+def plot_monthly_returns_dist(
+    portfolio: Portfolio,
+    **kwargs: dict[str, Any],
+) -> go.Figure:
     monthly_ret_table = ep.aggregate_returns(
         portfolio.returns[portfolio.portfolio_name],
         "monthly",
@@ -26,12 +30,12 @@ def plot_monthly_returns_dist(portfolio: Portfolio) -> go.Figure:
             yanchor="top",
         ),
         bargap=0.05,
-    )
-    fig.update_yaxes(dict(title="Number of Months"))
-    fig.update_xaxes(
-        dict(title="Returns"),
-        tickformat=",.1%",
-        ticks="outside",
+        yaxis=dict(title="Number of Months"),
+        xaxis=dict(
+            title="Returns",
+            tickformat=",.1%",
+            ticks="outside",
+        ),
     )
 
     fig.add_vline(
@@ -49,10 +53,10 @@ def plot_monthly_returns_dist(portfolio: Portfolio) -> go.Figure:
     return fig
 
 
-def plot_annual_returns(portfolio: Portfolio) -> go.Figure:
+def plot_annual_returns(portfolio: Portfolio, **kwargs: dict[str, Any]) -> go.Figure:
     fig = go.Figure()
 
-    for i, name in enumerate(portfolio.returns.columns[:]):
+    for i, name in enumerate(portfolio.returns.columns):
         ann_ret_df = ep.aggregate_returns(portfolio.returns[name], "yearly")
 
         fig.add_trace(

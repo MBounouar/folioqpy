@@ -3,7 +3,7 @@ from ..stats_summary import top_drawdown_table
 import plotly.graph_objects as go
 
 
-def show_top_drawdown(portfolio: Portfolio) -> go.Figure:
+def show_top_drawdown(portfolio: Portfolio, **kwargs) -> go.Figure:
     df = top_drawdown_table(portfolio, top=5)
 
     df[["Peak date", "Valley date", "Recovery date"]] = df[

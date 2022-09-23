@@ -1,13 +1,15 @@
 import numpy as np
 import plotly.graph_objects as go
 from dash_pyfolio.portfolio_data import Portfolio
+from typing import Any
+from ..periods import APPROX_BDAYS_PER_MONTH, APPROX_BDAYS_PER_YEAR
 
 
 def plot_rolling_volatility(
     portfolio: Portfolio,
-    rolling_vol_window: int = 21 * 6,
+    rolling_vol_window: int = APPROX_BDAYS_PER_MONTH * 6,
+    **kwargs: dict[str, Any],
 ) -> go.Figure:
-    APPROX_BDAYS_PER_YEAR = 252
     fig = go.Figure()
 
     rolling_vol_ts = portfolio.returns.rolling(rolling_vol_window).std() * np.sqrt(

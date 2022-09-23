@@ -3,6 +3,7 @@ import scipy as sp
 import pandas as pd
 import numpy as np
 from typing import Union
+import datetime
 
 from .portfolio_data import Portfolio
 from .stats import value_at_risk
@@ -51,6 +52,7 @@ def perf_stats(
         index=STAT_FUNC_NAMES.keys(),
         columns=[portfolio.portfolio_name],
     ).rename_axis("Metric")
+
     for func_name, (stat_func, _) in STAT_FUNC_NAMES.items():
         stats.loc[func_name, portfolio.portfolio_name] = stat_func(
             portfolio.returns[portfolio.portfolio_name]
@@ -71,7 +73,10 @@ def perf_stats(
     return stats
 
 
-def get_max_drawdown_underwater(underwater):
+def get_max_drawdown_underwater(
+    underwater: pd.Series,
+) -> tuple[datetime.datetime, datetime.datetime, datetime.datetime]:
+
     """
     Determines peak, valley, and recovery dates given an 'underwater'
     DataFrame.

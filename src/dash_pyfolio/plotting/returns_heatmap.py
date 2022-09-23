@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from dash_pyfolio.portfolio_data import Portfolio
 
 
-def plot_monthly_returns_heatmap(portfolio: Portfolio) -> go.Figure:
+def plot_monthly_returns_heatmap(portfolio: Portfolio, **kwargs) -> go.Figure:
     monthly_ret_table = ep.aggregate_returns(
         portfolio.returns[portfolio.portfolio_name], "monthly"
     )
