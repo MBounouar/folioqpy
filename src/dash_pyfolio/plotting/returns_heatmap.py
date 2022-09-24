@@ -32,8 +32,8 @@ def plot_monthly_returns_heatmap(portfolio: Portfolio, **kwargs) -> go.Figure:
     )
 
     fig.update_layout(
-        xaxis=dict(title="Year"),
-        yaxis=dict(title="Month"),
+        xaxis=dict(title="Month"),
+        yaxis=dict(title="Year"),
         title=dict(
             text="Monthly Returns %",
             x=0.5,

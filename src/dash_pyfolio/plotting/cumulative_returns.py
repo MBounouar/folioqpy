@@ -33,9 +33,8 @@ def plot_cumulative_returns(
 
     fig = go.Figure()
 
-    # title = f"Cumulative Returns{ if logy}"
-
     hovertemplate = "(%{x:'%Y-%m-%d'}, %{y:.2f}<extra>%{meta}</extra>)"
+
     for _, name in enumerate(cum_returns.columns):
         if portfolio.live_start_date is not None and name == pf_name:
             cum_back_ret = cum_returns.loc[
@@ -153,9 +152,9 @@ def plot_cumulative_returns(
         ),
         xaxis=dict(
             # dtick="M3",
-            tickformat="%Y-%m-%d",
+            tickformat="%Y-%m",
             ticks="outside",
-            linecolor="rgb(204, 204, 204)",
+            # linecolor="rgb(204, 204, 204)",
         ),
         yaxis=dict(
             tickformat=".2f",

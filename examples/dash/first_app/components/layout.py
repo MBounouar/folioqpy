@@ -4,14 +4,22 @@ from dash_pyfolio.portfolio_data import Portfolio
 from . import navbar
 import dash_pyfolio.plotting as dplt
 from dash_pyfolio.basic_components import simple_render
+import plotly.io as pio
 
 from . import ids
+
+# Define theme from
+#  ['ggplot2', 'seaborn', 'simple_white', 'plotly',
+#          'plotly_white', 'plotly_dark', 'presentation', 'xgridoff',
+#          'ygridoff', 'gridon', 'none']
+pio.templates.default = "plotly"
 
 
 def create_layout(
     app: Dash,
     pf_data: Portfolio,
 ) -> html.Div:
+
     # This is a vary basic way to render plots using currying
     render = simple_render(
         app,
@@ -76,7 +84,7 @@ def create_layout(
                             render(
                                 dplt.plot_cumulative_returns,
                                 output_id=ids.CUMULATIVE_RETURNS_VOL_MATCH_BMK_CHART,
-                                title=f"Cumulative Returns volatility matched to benchmark {pf_data.benchmark_name}",
+                                title=f"Cumulative Returns volatility matched to benchmark - {pf_data.benchmark_name}",
                                 volatility_match=True,
                             ),
                         ],

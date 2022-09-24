@@ -11,7 +11,7 @@ from dash_pyfolio.portfolio_data import Portfolio
 @curry
 def simple_render(
     app: Dash,
-    pf_data: Portfolio,
+    pf_obj: Portfolio,
     fn: Any,
     output_id: str,
     input_id: str,
@@ -22,7 +22,7 @@ def simple_render(
         Input(input_id, "value"),
     )
     def update_component(value) -> html.Div:
-        obj = fn(pf_data, **kwargs)
+        obj = fn(pf_obj, **kwargs)
         if isinstance(obj, go.Figure):
             return dcc.Graph(
                 figure=obj,
