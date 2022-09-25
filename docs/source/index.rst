@@ -1,9 +1,9 @@
-.. dash-pyfolio documentation master file, created by
+.. folioqpy documentation master file, created by
    sphinx-quickstart on Sun Sep 18 21:31:04 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to dash-pyfolio's documentation!
+Welcome to folioqpy's documentation!
 ========================================
 
 .. toctree::

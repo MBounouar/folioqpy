@@ -1,4 +1,4 @@
-# dash-pyfolio
+# folioqpy
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -14,5 +14,5 @@ Merging the functionalities of `pyfolio` and `empyrical` makes sense to me as th
 ## Installation
 
 ```bash
-$ pip install dash-pyfolio
+$ pip install folioqpy
 ```

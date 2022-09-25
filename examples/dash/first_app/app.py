@@ -25,7 +25,7 @@ pf_data = SimplePortfolio(
 
 # load the data and create the data manager
 app = Dash(external_stylesheets=[BOOTSTRAP], use_pages=False)
-app.title = "dash-pyfolio"
+app.title = "folioqpy"
 
 server = app.server
 

@@ -28,7 +28,7 @@ def render(app: Dash) -> html.Div:
                         # align="center",
                         # className="g-0",
                     ),
-                    href="https://github.com/MBounouar/dash-pyfolio",
+                    href="https://github.com/MBounouar/folioqpy",
                     style={"textDecoration": "none"},
                 ),
                 dbc.NavbarToggler(id=ids.NAVBAR_TOGGLER, n_clicks=0),
