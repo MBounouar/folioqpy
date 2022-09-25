@@ -1,9 +1,9 @@
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
-from dash_pyfolio.portfolio_data import Portfolio
+from folioqpy.portfolio_data import Portfolio
 from . import navbar
-import dash_pyfolio.plotting as dplt
-from dash_pyfolio.basic_components import simple_render
+import folioqpy.plotting as dplt
+from folioqpy.basic_components import simple_render
 import plotly.io as pio
 
 from . import ids

@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from dash_pyfolio.stats_summary import top_drawdown_table
-from dash_pyfolio.portfolio_data import SimplePortfolio
+from folioqpy.stats_summary import top_drawdown_table
+from folioqpy.portfolio_data import SimplePortfolio
 
 DECIMAL_PLACES = 8
 

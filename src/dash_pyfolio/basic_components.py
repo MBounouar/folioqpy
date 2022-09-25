@@ -5,7 +5,7 @@ from dash import Dash, dash_table, dcc, html
 from dash.dependencies import Input, Output
 from toolz import curry
 
-from dash_pyfolio.portfolio_data import Portfolio
+from folioqpy.portfolio_data import Portfolio
 
 
 @curry

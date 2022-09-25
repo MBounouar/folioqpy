@@ -1,7 +1,7 @@
 # import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from dash_pyfolio.portfolio_data import Portfolio
+from folioqpy.portfolio_data import Portfolio
 from typing import Any
 
 

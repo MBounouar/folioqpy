@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dash_pyfolio"
+name = "folioqpy"
 version = "0.0.1"
 authors =[
     {name='M. Bounouar'},
@@ -29,3 +29,15 @@ homepage = "https://github.com/MBounouar/dash-pyfolio"
 
 [tool.black]
 target-version = ['py39', 'py310']
+
+[[tool.mypy.overrides]]
+module = [
+    "empyrical",
+    "scipy",
+    "plotly",
+    "plotly.graph_objects",
+    "toolz",
+    "dash",
+    "dash.dependencies",
+]
+ignore_missing_imports = true

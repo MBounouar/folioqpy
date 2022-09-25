@@ -1,7 +1,7 @@
 import empyrical as ep
 from typing import Any
 import plotly.graph_objects as go
-from dash_pyfolio.portfolio_data import Portfolio
+from folioqpy.portfolio_data import Portfolio
 
 
 def plot_monthly_returns_dist(

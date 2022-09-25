@@ -2,7 +2,7 @@ import calendar
 
 import empyrical as ep
 import plotly.graph_objects as go
-from dash_pyfolio.portfolio_data import Portfolio
+from folioqpy.portfolio_data import Portfolio
 
 
 def plot_monthly_returns_heatmap(portfolio: Portfolio, **kwargs) -> go.Figure:

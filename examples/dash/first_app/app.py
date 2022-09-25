@@ -2,7 +2,7 @@ import pandas as pd
 import yfinance as yf
 from dash import Dash
 from dash_bootstrap_components.themes import BOOTSTRAP
-from dash_pyfolio.portfolio_data import SimplePortfolio
+from folioqpy.portfolio_data import SimplePortfolio
 
 from components.layout import create_layout
 

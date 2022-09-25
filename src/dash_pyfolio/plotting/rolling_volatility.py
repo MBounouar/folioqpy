@@ -1,6 +1,6 @@
 import numpy as np
 import plotly.graph_objects as go
-from dash_pyfolio.portfolio_data import Portfolio
+from folioqpy.portfolio_data import Portfolio
 from typing import Any
 from ..periods import APPROX_BDAYS_PER_MONTH, APPROX_BDAYS_PER_YEAR
 
