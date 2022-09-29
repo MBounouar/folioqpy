@@ -68,11 +68,11 @@ jobs:
       - name: Run pytest
         run: tox -e ${{ matrix.python.toxenv }}
 
-      - name: Upload coverage data to Codecov
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        #  && ${{matrix.python.version == '3.9'}}
-        uses: codecov/codecov-action@v3
-        with:
-          fail_ci_if_error: true
-          name: codecov-umbrella
-          verbose: true
+      # - name: Upload coverage data to Codecov
+      #   if: ${{ matrix.os == 'ubuntu-latest' }}
+      #   #  && ${{matrix.python.version == '3.9'}}
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     fail_ci_if_error: true
+      #     name: codecov-umbrella
+      #     verbose: true
