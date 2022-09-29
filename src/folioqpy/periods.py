@@ -29,7 +29,7 @@ class AnnualizationFactor(IntEnum):  # pragma: no cover
 
         elif isinstance(period, int):
             return period
-        
+
         else:
             raise ValueError(
                 f"Invalid Period: {period}. "
