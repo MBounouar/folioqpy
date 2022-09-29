@@ -1,8 +1,6 @@
 import scipy as sp
 import pandas as pd
 import numpy as np
-from typing import Union
-import datetime
 
 from .portfolio_data import Portfolio
 from .stats.var import value_at_risk
@@ -18,6 +16,7 @@ from .stats.qstats import (
     omega_ratio,
     sortino_ratio,
     tail_ratio,
+    get_top_drawdowns,
 )
 
 STAT_FUNC_NAMES = {
@@ -84,81 +83,6 @@ def perf_stats(
     return stats
 
 
-def get_max_drawdown_underwater(
-    underwater: pd.Series,
-) -> tuple[datetime.datetime, datetime.datetime, datetime.datetime]:
-
-    """
-    Determines peak, valley, and recovery dates given an 'underwater'
-    DataFrame.
-
-    An underwater DataFrame is a DataFrame that has precomputed
-    rolling drawdown.
-
-    Parameters
-    ----------
-    underwater : pd.Series
-       Underwater returns (rolling drawdown) of a strategy.
-
-    Returns
-    -------
-    peak : datetime
-        The maximum drawdown's peak.
-    valley : datetime
-        The maximum drawdown's valley.
-    recovery : datetime
-        The maximum drawdown's recovery.
-    """
-
-    valley = underwater.idxmin()  # end of the period
-    # Find first 0
-    peak = underwater[:valley][underwater[:valley] == 0].index[-1]
-    # Find last 0
-    try:
-        recovery = underwater[valley:][underwater[valley:] == 0].index[0]
-    except IndexError:
-        recovery = np.nan  # drawdown not recovered
-    return peak, valley, recovery
-
-
-def get_top_drawdowns(df_cum, top=10):
-    """
-    Finds top drawdowns, sorted by drawdown amount.
-
-    Parameters
-    ----------
-    returns : pd.Series
-        Daily returns of the strategy, noncumulative.
-         - See full explanation in tears.create_full_tear_sheet.
-    top : int, optional
-        The amount of top drawdowns to find (default 10).
-
-    Returns
-    -------
-    drawdowns : list
-        List of drawdown peaks, valleys, and recoveries. See get_max_drawdown.
-    """
-
-    running_max = np.maximum.accumulate(df_cum)
-    underwater = df_cum / running_max - 1
-
-    drawdowns = []
-    for _ in range(top):
-        peak, valley, recovery = get_max_drawdown_underwater(underwater)
-        # Slice out draw-down period
-        if not pd.isnull(recovery):
-            underwater.drop(underwater[peak:recovery].index[1:-1], inplace=True)
-        else:
-            # drawdown has not ended yet
-            underwater = underwater.loc[:peak]
-
-        drawdowns.append((peak, valley, recovery))
-        if (len(underwater) == 0) or (np.min(underwater) == 0):
-            break
-
-    return drawdowns
-
-
 def top_drawdown_table(portfolio: Portfolio, top: int = 5) -> pd.DataFrame:
     """Top Drawdown Table.
 
@@ -210,51 +134,3 @@ def top_drawdown_table(portfolio: Portfolio, top: int = 5) -> pd.DataFrame:
     ].astype("datetime64")
 
     return df_drawdowns
-
-
-def drawdown_series(
-    returns: Union[np.ndarray, pd.Series], out: np.ndarray = None
-) -> Union[pd.Series, np.ndarray]:
-    """Determines the series of drawdown of a strategy.
-
-    Args:
-        returns (Union[np.ndarray, pd.Series]):  Daily returns of the strategy, noncumulative.
-        out (np.ndarray, optional): Array to use as output buffer. Defaults to None.
-
-    Returns:
-        Union[pd.Series, np.ndarray]: drawdown_series
-    """
-    allocated_output = out is None
-    if allocated_output:
-        out = np.empty(
-            (returns.shape[0] + 1,) + returns.shape[1:],
-            dtype="float64",
-        )
-
-    returns_1d = returns.ndim == 1
-
-    if len(returns) < 1:
-        out[()] = np.nan
-        if returns_1d:
-            out = out.item()
-        return out
-
-    returns_array = np.asanyarray(returns)
-
-    out[0] = start = 100
-    cum_returns(returns_array, starting_value=start, out=out[1:])
-
-    max_return = np.fmax.accumulate(out, axis=0)
-
-    np.divide((out - max_return), max_return, out=out)
-
-    if returns.ndim == 1 and isinstance(returns, pd.Series):
-        out = pd.Series(out[1:], index=returns.index)
-    elif isinstance(returns, pd.DataFrame):
-        out = pd.DataFrame(
-            out[1:],
-            index=returns.index,
-            columns=returns.columns,
-        )
-
-    return out

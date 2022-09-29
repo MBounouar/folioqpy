@@ -2,6 +2,7 @@ import math
 from collections import OrderedDict
 from sys import float_info
 from typing import Union, Optional
+import datetime
 
 import numpy as np
 import pandas as pd
@@ -2017,6 +2018,81 @@ def forecast_cone_bootstrap(
     )
 
     return cone_bounds
+
+
+def get_max_drawdown_underwater(
+    underwater: pd.Series,
+) -> tuple[datetime.datetime, datetime.datetime, datetime.datetime]:
+
+    """
+    Determines peak, valley, and recovery dates given an 'underwater'
+    DataFrame.
+
+    An underwater DataFrame is a DataFrame that has precomputed
+    rolling drawdown.
+
+    Parameters
+    ----------
+    underwater : pd.Series
+       Underwater returns (rolling drawdown) of a strategy.
+
+    Returns
+    -------
+    peak : datetime
+        The maximum drawdown's peak.
+    valley : datetime
+        The maximum drawdown's valley.
+    recovery : datetime
+        The maximum drawdown's recovery.
+    """
+
+    valley = underwater.idxmin()  # end of the period
+    # Find first 0
+    peak = underwater[:valley][underwater[:valley] == 0].index[-1]
+    # Find last 0
+    try:
+        recovery = underwater[valley:][underwater[valley:] == 0].index[0]
+    except IndexError:
+        recovery = np.nan  # drawdown not recovered
+    return peak, valley, recovery
+
+
+def get_top_drawdowns(df_cum, top=10):
+    """
+    Finds top drawdowns, sorted by drawdown amount.
+
+    Parameters
+    ----------
+    returns : pd.Series
+        Daily returns of the strategy, noncumulative.
+         - See full explanation in tears.create_full_tear_sheet.
+    top : int, optional
+        The amount of top drawdowns to find (default 10).
+
+    Returns
+    -------
+    drawdowns : list
+        List of drawdown peaks, valleys, and recoveries. See get_max_drawdown.
+    """
+
+    running_max = np.maximum.accumulate(df_cum)
+    underwater = df_cum / running_max - 1
+
+    drawdowns = []
+    for _ in range(top):
+        peak, valley, recovery = get_max_drawdown_underwater(underwater)
+        # Slice out draw-down period
+        if not pd.isnull(recovery):
+            underwater.drop(underwater[peak:recovery].index[1:-1], inplace=True)
+        else:
+            # drawdown has not ended yet
+            underwater = underwater.loc[:peak]
+
+        drawdowns.append((peak, valley, recovery))
+        if (len(underwater) == 0) or (np.min(underwater) == 0):
+            break
+
+    return drawdowns
 
 
 SIMPLE_STAT_FUNCS = [
