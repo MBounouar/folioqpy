@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any
 
 import plotly.graph_objects as go
 from dash import Dash, dash_table, dcc, html
@@ -21,7 +21,7 @@ def simple_render(
         Output(output_id, "children"),
         Input(input_id, "value"),
     )
-    def update_component(value) -> html.Div:
+    def update_component(value: Any) -> html.Div:
         obj = fn(pf_obj, **kwargs)
         if isinstance(obj, go.Figure):
             return dcc.Graph(
@@ -31,25 +31,25 @@ def simple_render(
         elif isinstance(obj, dash_table.DataTable):
             return obj
         else:
-            raise Exception
+            raise ValueError(f"{obj} is not understood")
 
     return html.Div(id=output_id)
 
 
-@curry
-def basic_table_render(
-    app: Dash,
-    pf_data: Portfolio,
-    fn: Any,
-    output_id: str,
-    input_id: str,
-    **kwargs: Union[str, int],
-) -> html.Div:
-    @app.callback(
-        Output(output_id, "children"),
-        Input(input_id, "value"),
-    )
-    def update_table(value) -> html.Div:
-        return fn(pf_data, **kwargs)
+# @curry
+# def basic_table_render(
+#     app: Dash,
+#     pf_data: Portfolio,
+#     fn: Any,
+#     output_id: str,
+#     input_id: str,
+#     **kwargs: Union[str, int],
+# ) -> html.Div:
+#     @app.callback(
+#         Output(output_id, "children"),
+#         Input(input_id, "value"),
+#     )
+#     def update_table(value) -> html.Div:
+#         return fn(pf_data, **kwargs)
 
-    return html.Div(id=output_id)
+#     return html.Div(id=output_id)
