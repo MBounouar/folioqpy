@@ -1,7 +1,7 @@
 import math
 from collections import OrderedDict
 from sys import float_info
-from typing import Union
+from typing import Union, Optional
 
 import numpy as np
 import pandas as pd
@@ -22,20 +22,17 @@ from .utils import (
 )
 
 
-def simple_returns(prices):
-    """
-    Compute simple returns from a timeseries of prices.
+def simple_returns(
+    prices: Union[np.ndarray, pd.Series, pd.DataFrame]
+) -> Union[np.ndarray, pd.Series, pd.DataFrame]:
+    """Compute simple returns from a timeseries of prices.
 
-    Parameters
-    ----------
-    prices : pd.Series, pd.DataFrame or np.ndarray
-        Prices of assets in wide-format, with assets as columns,
-        and indexed by datetimes.
+    Args:
+        prices (pd.Series, pd.DataFrame, np.ndarray): Prices of assets in wide-format,
+            with assets as columns, and indexed by datetimes.
 
-    Returns
-    -------
-    returns : array-like
-        Returns of assets in wide-format, with assets as columns,
+    Returns:
+        np.ndarray, pd.Series, pd.DataFrame: Returns of assets in wide-format, with assets as columns,
         and index coerced to be tz-aware.
     """
     if isinstance(prices, (pd.DataFrame, pd.Series)):
@@ -1891,7 +1888,7 @@ def simulate_paths(
     num_days: int,
     starting_value: float = 1,
     num_samples: int = 1000,
-    random_seed: Union[int, None] = None,
+    random_seed: Optional[int] = None,
 ) -> np.ndarray:
     """Generate alternate paths using available values from in-sample returns.
 

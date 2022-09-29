@@ -6,26 +6,6 @@ import pandas as pd
 from numpy.lib.stride_tricks import as_strided
 
 
-def get_utc_timestamp(
-    dt: Union[pd.Timestamp, pd.DatetimeIndex]
-) -> Union[pd.Timestamp, pd.DatetimeIndex]:
-    """Returns the Timestamp/DatetimeIndex with either localized or converted to UTC.
-
-    Args:
-        dt (Union[pd.Timestamp, pd.DatetimeIndex]): the date(s) to be converted
-
-    Returns:
-        Union[pd.Timestamp, pd.DatetimeIndex]: date(s) converted to UTC
-    """
-
-    dt = pd.to_datetime(dt)
-    try:
-        dt = dt.tz_localize("UTC")
-    except TypeError:
-        dt = dt.tz_convert("UTC")
-    return dt
-
-
 try:
     # fast versions
     import bottleneck as bn
@@ -60,6 +40,26 @@ except ImportError:
     nanmin = np.nanmin
     nanargmax = np.nanargmax
     nanargmin = np.nanargmin
+
+
+def get_utc_timestamp(
+    dt: Union[pd.Timestamp, pd.DatetimeIndex]
+) -> Union[pd.Timestamp, pd.DatetimeIndex]:
+    """Returns the Timestamp/DatetimeIndex with either localized or converted to UTC.
+
+    Args:
+        dt (Union[pd.Timestamp, pd.DatetimeIndex]): the date(s) to be converted
+
+    Returns:
+        (pd.Timestamp, pd.DatetimeIndex): date(s) converted to UTC
+    """
+
+    dt = pd.to_datetime(dt)
+    try:
+        dt = dt.tz_localize("UTC")
+    except TypeError:
+        dt = dt.tz_convert("UTC")
+    return dt
 
 
 def _roll_ndarray(func, window, *args, **kwargs):
