@@ -1,16 +1,17 @@
-import empyrical as ep
 from typing import Any
 import plotly.graph_objects as go
 from folioqpy.portfolio_data import Portfolio
+from ..stats.qstats import aggregate_returns
+from ..periods import AnnualizationFactor
 
 
 def plot_monthly_returns_dist(
     portfolio: Portfolio,
     **kwargs: dict[str, Any],
 ) -> go.Figure:
-    monthly_ret_table = ep.aggregate_returns(
+    monthly_ret_table = aggregate_returns(
         portfolio.returns[portfolio.portfolio_name],
-        "monthly",
+        AnnualizationFactor.MONTHLY,
     )
 
     fig = go.Figure(
@@ -57,7 +58,10 @@ def plot_annual_returns(portfolio: Portfolio, **kwargs: dict[str, Any]) -> go.Fi
     fig = go.Figure()
 
     for i, name in enumerate(portfolio.returns.columns):
-        ann_ret_df = ep.aggregate_returns(portfolio.returns[name], "yearly")
+        ann_ret_df = aggregate_returns(
+            portfolio.returns[name],
+            AnnualizationFactor.YEARLY,
+        )
 
         fig.add_trace(
             go.Bar(

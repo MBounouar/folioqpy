@@ -1,6 +1,6 @@
 import plotly.graph_objects as go
 from ..portfolio_data import Portfolio
-from ..utils import forecast_cone_bootstrap
+from ..stats.qstats import forecast_cone_bootstrap
 import pandas as pd
 import numpy as np
 

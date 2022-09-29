@@ -1,4 +1,3 @@
-import empyrical as ep
 import scipy as sp
 import pandas as pd
 import numpy as np
@@ -6,22 +5,34 @@ from typing import Union
 import datetime
 
 from .portfolio_data import Portfolio
-from .stats import value_at_risk
-
+from .stats.var import value_at_risk
+from .stats.qstats import (
+    cum_returns,
+    annual_return,
+    cum_returns_final,
+    annual_volatility,
+    sharpe_ratio,
+    calmar_ratio,
+    stability_of_timeseries,
+    max_drawdown,
+    omega_ratio,
+    sortino_ratio,
+    tail_ratio,
+)
 
 STAT_FUNC_NAMES = {
-    "Annual return": [ep.annual_return, ".1%"],
-    "Cumulative returns": [ep.cum_returns_final, ".1%"],
-    "Annual volatility": [ep.annual_volatility, ".1%"],
-    "Sharpe ratio": [ep.sharpe_ratio, ".2f"],
-    "Calmar ratio": [ep.calmar_ratio, ".2f"],
-    "Stability": [ep.stability_of_timeseries, ".2f"],
-    "Max drawdown": [ep.max_drawdown, ".1%"],
-    "Omega ratio": [ep.omega_ratio, ".2f"],
-    "Sortino ratio": [ep.sortino_ratio, ".2f"],
+    "Annual return": [annual_return, ".1%"],
+    "Cumulative returns": [cum_returns_final, ".1%"],
+    "Annual volatility": [annual_volatility, ".1%"],
+    "Sharpe ratio": [sharpe_ratio, ".2f"],
+    "Calmar ratio": [calmar_ratio, ".2f"],
+    "Stability": [stability_of_timeseries, ".2f"],
+    "Max drawdown": [max_drawdown, ".1%"],
+    "Omega ratio": [omega_ratio, ".2f"],
+    "Sortino ratio": [sortino_ratio, ".2f"],
     "Skew": [sp.stats.skew, ".2f"],
     "Kurtosis": [sp.stats.kurtosis, ".2f"],
-    "Tail ratio": [ep.tail_ratio, ".2f"],
+    "Tail ratio": [tail_ratio, ".2f"],
     # "Common sense ratio": ,
     "Daily value at risk": [value_at_risk, ".1%"],
     # "alpha": "Alpha",
@@ -159,7 +170,7 @@ def top_drawdown_table(portfolio: Portfolio, top: int = 5) -> pd.DataFrame:
         pd.DataFrame: drawdowns
     """
     returns = portfolio.returns[portfolio.portfolio_name]
-    df_cum = ep.cum_returns(returns, 1.0)
+    df_cum = cum_returns(returns, 1.0)
     drawdown_periods = get_top_drawdowns(df_cum, top=top)
     df_drawdowns = pd.DataFrame(
         index=range(top, 1),
@@ -231,7 +242,7 @@ def drawdown_series(
     returns_array = np.asanyarray(returns)
 
     out[0] = start = 100
-    ep.cum_returns(returns_array, starting_value=start, out=out[1:])
+    cum_returns(returns_array, starting_value=start, out=out[1:])
 
     max_return = np.fmax.accumulate(out, axis=0)
 

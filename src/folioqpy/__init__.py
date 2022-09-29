@@ -4,7 +4,7 @@ from . import (
     portfolio_data,
     stats,
     stats_summary,
-    utils,
+    periods,
 )
 
 __all__ = [
@@ -13,5 +13,5 @@ __all__ = [
     "portfolio_data",
     "stats",
     "stats_summary",
-    "utils",
+    "periods",
 ]

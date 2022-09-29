@@ -1,11 +1,12 @@
 from dataclasses import dataclass, field
 
 # import abc
-from typing import Union, Optional
-import pandas as pd
-from folioqpy.utils import get_utc_timestamp
-import empyrical as ep
+from typing import Optional, Union
 
+import pandas as pd
+
+from .stats.qstats import cum_returns as ts_cum_returns
+from .stats.utils import get_utc_timestamp
 
 # @runtime_checkable
 # class Portfolio(Protocol):
@@ -46,4 +47,4 @@ class SimplePortfolio(Portfolio):
 
     @classmethod
     def cum_returns(cls, returns, starting_value=1.0):
-        return ep.cum_returns(returns, starting_value)
+        return ts_cum_returns(returns, starting_value)
