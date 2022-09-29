@@ -1,8 +1,8 @@
+import datetime
 import math
 from collections import OrderedDict
 from sys import float_info
-from typing import Union, Optional
-import datetime
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -174,11 +174,77 @@ def aggregate_returns(returns, convert_to):
     elif convert_to == YEARLY:
         grouping = [lambda x: x.year]
     else:
-        raise ValueError(
-            "convert_to must be {}, {} or {}".format(WEEKLY, MONTHLY, YEARLY)
-        )
+        raise ValueError(f"convert_to must be {WEEKLY}, {MONTHLY} or {YEARLY}")
 
     return returns.groupby(grouping).apply(cumulate_returns)
+
+
+def annual_return(returns, period=DAILY):
+    """
+    Determines the mean annual growth rate of returns. This is equivilent
+    to the compound annual growth rate.
+
+    Parameters
+    ----------
+    returns : pd.Series or np.ndarray
+        Periodic returns of the strategy, noncumulative.
+        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+    period : str or int
+        Defines the periodicity of the 'returns' data for purposes of
+        annualizing.
+        Defaults are::
+
+            'monthly':12
+            'weekly': 52
+            'daily': 252
+
+    Returns
+    -------
+    annual_return : float
+        Annual Return as CAGR (Compounded Annual Growth Rate).
+
+    """
+
+    if len(returns) < 1:
+        return np.nan
+
+    ann_factor = AnnualizationFactor.from_period(period)
+    num_years = len(returns) / ann_factor
+    # Pass array to ensure index -1 looks up successfully.
+    ending_value = cum_returns_final(returns, starting_value=1)
+
+    return ending_value ** (1 / num_years) - 1
+
+
+def cagr(returns, period=DAILY):
+    """
+    Compute compound annual growth rate. Alias function for
+    :func:`~empyrical.stats.annual_return`
+
+    Parameters
+    ----------
+    returns : pd.Series or np.ndarray
+        Daily returns of the strategy, noncumulative.
+        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+    period : str or int
+        Defines the periodicity of the 'returns' data for purposes of
+        annualizing.
+        Defaults are::
+
+            'monthly':12
+            'weekly': 52
+            'daily': 252
+
+    Returns
+    -------
+    cagr : float
+        The CAGR value.
+
+    """
+    return annual_return(returns, period)
+
+
+roll_cagr = _create_unary_vectorized_roll_function(cagr)
 
 
 def drawdown_series(returns, out=None):
@@ -281,74 +347,6 @@ def max_drawdown(returns, out=None):
 
 
 roll_max_drawdown = _create_unary_vectorized_roll_function(max_drawdown)
-
-
-def annual_return(returns, period=DAILY):
-    """
-    Determines the mean annual growth rate of returns. This is equivilent
-    to the compound annual growth rate.
-
-    Parameters
-    ----------
-    returns : pd.Series or np.ndarray
-        Periodic returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
-    period : str or int
-        Defines the periodicity of the 'returns' data for purposes of
-        annualizing.
-        Defaults are::
-
-            'monthly':12
-            'weekly': 52
-            'daily': 252
-
-    Returns
-    -------
-    annual_return : float
-        Annual Return as CAGR (Compounded Annual Growth Rate).
-
-    """
-
-    if len(returns) < 1:
-        return np.nan
-
-    ann_factor = AnnualizationFactor.from_period(period)
-    num_years = len(returns) / ann_factor
-    # Pass array to ensure index -1 looks up successfully.
-    ending_value = cum_returns_final(returns, starting_value=1)
-
-    return ending_value ** (1 / num_years) - 1
-
-
-def cagr(returns, period=DAILY):
-    """
-    Compute compound annual growth rate. Alias function for
-    :func:`~empyrical.stats.annual_return`
-
-    Parameters
-    ----------
-    returns : pd.Series or np.ndarray
-        Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
-    period : str or int
-        Defines the periodicity of the 'returns' data for purposes of
-        annualizing.
-        Defaults are::
-
-            'monthly':12
-            'weekly': 52
-            'daily': 252
-
-    Returns
-    -------
-    cagr : float
-        The CAGR value.
-
-    """
-    return annual_return(returns, period)
-
-
-roll_cagr = _create_unary_vectorized_roll_function(cagr)
 
 
 def annual_volatility(returns, period=DAILY, alpha=2.0, out=None):
