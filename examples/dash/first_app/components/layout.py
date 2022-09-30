@@ -39,6 +39,11 @@ def create_layout(
                         label="Overview",
                         children=[
                             render(
+                                dplt.plot_return_quantiles,
+                                output_id=ids.RETURNS_QUANTILES_PLOT,
+                                title=f"Return Quantiles - {pf_data.portfolio_name}",
+                            ),
+                            render(
                                 dplt.show_perf_stats,
                                 output_id=ids.PERF_STATS_TABLE,
                             ),

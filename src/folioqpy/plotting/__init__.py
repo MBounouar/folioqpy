@@ -6,6 +6,7 @@ from .returns_heatmap import plot_monthly_returns_heatmap
 from .rolling_volatility import plot_rolling_volatility
 from .stats_table import show_perf_stats
 from .drawdown_table import show_top_drawdown
+from .returns_quantiles import plot_return_quantiles
 
 __all__ = [
     "plot_drawdown_underwater",
@@ -17,4 +18,5 @@ __all__ = [
     "plot_cumulative_returns",
     "show_perf_stats",
     "show_top_drawdown",
+    "plot_return_quantiles",
 ]
