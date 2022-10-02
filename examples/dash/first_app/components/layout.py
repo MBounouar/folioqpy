@@ -39,6 +39,10 @@ def create_layout(
                         label="Overview",
                         children=[
                             render(
+                                dplt.plot_rolling_beta,
+                                output_id=ids.ROLLING_BETA_CHART,
+                            ),
+                            render(
                                 dplt.plot_rolling_sharpe,
                                 output_id=ids.ROLLING_SHARPE_RATIO_CHART,
                             ),

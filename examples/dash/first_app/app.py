@@ -6,15 +6,15 @@ from folioqpy.portfolio_data import SimplePortfolio
 
 from components.layout import create_layout
 
-spy = yf.Ticker("META").history("max")
-aapl = yf.Ticker("IBM").history("max")
+meta = yf.Ticker("META").history("max")
+spy = yf.Ticker("SPY").history("max")
 
 spy.index = spy.index.tz_localize("utc")
-aapl.index = aapl.index.tz_localize("utc")
+meta.index = meta.index.tz_localize("utc")
 spy_ret = spy.Close.pct_change().to_frame().rename({"Close": "SPY"}, axis=1)
-aapl_ret = aapl.Close.pct_change().to_frame().rename({"Close": "AAPL"}, axis=1)
+meta_ret = meta.Close.pct_change().to_frame().rename({"Close": "META"}, axis=1)
 
-df = pd.concat([spy_ret, aapl_ret], axis=1).dropna(how="any", axis=0)
+df = pd.concat([meta_ret, spy_ret], axis=1).dropna(how="any", axis=0)
 
 pf_data = SimplePortfolio(
     returns=df.loc["2019":],

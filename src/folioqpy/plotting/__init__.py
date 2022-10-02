@@ -8,6 +8,7 @@ from .stats_table import show_perf_stats
 from .drawdown_table import show_top_drawdown
 from .returns_quantiles import plot_return_quantiles
 from .rolling_sharpe import plot_rolling_sharpe
+from .rolling_beta import plot_rolling_beta
 
 __all__ = [
     "plot_drawdown_underwater",
@@ -21,4 +22,5 @@ __all__ = [
     "show_top_drawdown",
     "plot_return_quantiles",
     "plot_rolling_sharpe",
+    "plot_rolling_beta",
 ]
