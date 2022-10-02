@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+dash = "*"
+dash-bootstrap-components = "*"
+pandas = "*"
+plotly = "*"
+scipy = "*"
+bottleneck = "*"
+
+[dev-packages]
+black = "*"
+flake8 = "*"
+yfinance = "*"
+pytest = "*"
+flake8-bugbear = "*"
+tox = "*"
+mypy = "*"
+pytest-cov = "*"
+
+[requires]
+python_version = "3.9"

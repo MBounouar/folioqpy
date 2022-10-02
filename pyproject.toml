@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "folioqpy"
+version = "0.0.1"
+authors =[
+    {name='M. Bounouar'},
+    {email="MBounouar@users.noreply.github.com"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.9"
+classifiers = [
+	"Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+homepage = "https://github.com/MBounouar/dash-pyfolio"
+"Source Code" = "https://github.com/MBounouar/dash-pyfolio"
+
+[tool.black]
+target-version = ['py39', 'py310']
+
+[[tool.mypy.overrides]]
+module = [
+    "empyrical",
+    "scipy",
+    "plotly",
+    "plotly.graph_objects",
+    "toolz",
+    "dash",
+    "dash.dependencies",
+]
+ignore_missing_imports = true
