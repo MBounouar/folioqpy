@@ -54,7 +54,10 @@ def plot_monthly_returns_dist(
     return fig
 
 
-def plot_annual_returns(portfolio: Portfolio, **kwargs: dict[str, Any]) -> go.Figure:
+def plot_annual_returns(
+    portfolio: Portfolio,
+    **kwargs: dict[str, Any],
+) -> go.Figure:
     fig = go.Figure()
 
     for i, name in enumerate(portfolio.returns.columns):
@@ -76,6 +79,13 @@ def plot_annual_returns(portfolio: Portfolio, **kwargs: dict[str, Any]) -> go.Fi
                 visible="legendonly" if i > 0 else True,
             )
         )
+        if i == 0:
+            fig.add_vline(
+                x=ann_ret_df.mean(),
+                line_width=1.5,
+                line_dash="4px",
+                line_color="red",
+            )
 
     fig.add_vline(
         x=0,

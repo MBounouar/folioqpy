@@ -12,7 +12,7 @@ from . import ids
 #  ['ggplot2', 'seaborn', 'simple_white', 'plotly',
 #          'plotly_white', 'plotly_dark', 'presentation', 'xgridoff',
 #          'ygridoff', 'gridon', 'none']
-pio.templates.default = "plotly"
+pio.templates.default = "plotly_white"  # "plotly"
 
 
 def create_layout(
@@ -38,6 +38,10 @@ def create_layout(
                     dbc.Tab(
                         label="Overview",
                         children=[
+                            render(
+                                dplt.plot_rolling_sharpe,
+                                output_id=ids.ROLLING_SHARPE_RATIO_CHART,
+                            ),
                             render(
                                 dplt.plot_return_quantiles,
                                 output_id=ids.RETURNS_QUANTILES_PLOT,

@@ -13,5 +13,6 @@ CUMULATIVE_RETURNS_VOL_MATCH_BMK_CHART = "cumulative-returns-vol-match-bmk-chart
 DRAWDOWN_RETURNS_CHART = "drawdown-returns-chart"
 MONTHLY_RETURNS_HEATMAP = "monthly-returns-heatmap"
 ROLLING_VOLATILITY_CHART = "rolling-volatility-chart"
+ROLLING_SHARPE_RATIO_CHART = "rolling-sharpe-ratio"
 MONNTLY_RETURNS_DIST = "monthly-returns-dist"
 RETURNS_QUANTILES_PLOT = "returns-quantiles-plot"

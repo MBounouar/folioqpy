@@ -7,6 +7,7 @@ from .rolling_volatility import plot_rolling_volatility
 from .stats_table import show_perf_stats
 from .drawdown_table import show_top_drawdown
 from .returns_quantiles import plot_return_quantiles
+from .rolling_sharpe import plot_rolling_sharpe
 
 __all__ = [
     "plot_drawdown_underwater",
@@ -19,4 +20,5 @@ __all__ = [
     "show_perf_stats",
     "show_top_drawdown",
     "plot_return_quantiles",
+    "plot_rolling_sharpe",
 ]

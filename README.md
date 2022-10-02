@@ -5,15 +5,30 @@
 
 ## Summary
 
-Merging the defunct quantopian `pyfolio` and `empyrical` packages into a single package and using `plotly` as a plotting library
+**folioqpy** is a Python library that merges the functionalities of the defunct quantopian `pyfolio` and `empyrical` packages into a single one, but using `plotly` instead of `matplotlib`.
 
-# Rationale
+## Rationale
 
-`plotly` offers a lot of nice functionalities, interacting with Dash, online reports, interactive graphs, ...
-Merging the functionalities of `pyfolio` and `empyrical` makes sense to me as they are complement each other.
+`plotly` allows for more cumstomized online reports (using Dash), interactive graphs, ...
+Taking advantage of a well tested but unfortunately defunct library and attempt to maintain and keep it up to date (typing, ...).
 
 ## Installation
 
 ```bash
 $ pip install folioqpy
 ```
+
+## Examples
+
+Basic Dash examples can be found under the folder `examples/dash`
+
+## Development
+
+Ideally follow the principles outlined [here](https://nvie.com/posts/a-successful-git-branching-model/)
+PR's, ideas and other suggestions are welcome.
+
+## TODO's
+
+[] Port all the pyfolio plots
+[] typing
+[] Docs
