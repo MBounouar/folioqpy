@@ -1,6 +1,5 @@
 import calendar
 
-# import empyrical as ep
 import plotly.graph_objects as go
 from ..portfolio_data import Portfolio
 from ..periods import AnnualizationFactor

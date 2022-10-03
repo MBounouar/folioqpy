@@ -69,7 +69,7 @@ class TestStats(BaseTestClass):
         indirect=["prices"],
     )
     def test_simple_returns(self, prices, expected):
-        simple_returns = self.empyrical.simple_returns(prices)
+        simple_returns = self.stats.simple_returns(prices)
         np.testing.assert_almost_equal(np.array(simple_returns), expected, 4)
         self.assert_indexes_match(simple_returns, prices.iloc[1:])
 
@@ -126,7 +126,7 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_cum_returns(self, returns, starting_value, expected):
-        cum_returns = self.empyrical.cum_returns(
+        cum_returns = self.stats.cum_returns(
             returns,
             starting_value=starting_value,
         )
@@ -147,7 +147,7 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_cum_returns_final(self, returns, starting_value, expected):
-        cum_returns_final = self.empyrical.cum_returns_final(
+        cum_returns_final = self.stats.cum_returns_final(
             returns,
             starting_value=starting_value,
         )
@@ -215,7 +215,7 @@ class TestStats(BaseTestClass):
     )
     def test_max_drawdown(self, returns, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.max_drawdown(returns),
+            self.stats.max_drawdown(returns),
             expected,
             DECIMAL_PLACES,
         )
@@ -237,9 +237,9 @@ class TestStats(BaseTestClass):
     def test_max_drawdown_translation(self, returns, constant):
         depressed_returns = returns - constant
         raised_returns = returns + constant
-        max_dd = self.empyrical.max_drawdown(returns)
-        depressed_dd = self.empyrical.max_drawdown(depressed_returns)
-        raised_dd = self.empyrical.max_drawdown(raised_returns)
+        max_dd = self.stats.max_drawdown(returns)
+        depressed_dd = self.stats.max_drawdown(depressed_returns)
+        raised_dd = self.stats.max_drawdown(raised_returns)
         assert max_dd <= raised_dd
         assert depressed_dd <= max_dd
 
@@ -254,7 +254,7 @@ class TestStats(BaseTestClass):
     )
     def test_annual_ret(self, returns, period, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.annual_return(returns, period=period),
+            self.stats.annual_return(returns, period=period),
             expected,
             DECIMAL_PLACES,
         )
@@ -271,7 +271,7 @@ class TestStats(BaseTestClass):
     )
     def test_annual_volatility(self, returns, period, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.annual_volatility(returns, period=period),
+            self.stats.annual_volatility(returns, period=period),
             expected,
             DECIMAL_PLACES,
         )
@@ -289,7 +289,7 @@ class TestStats(BaseTestClass):
     )
     def test_calmar(self, returns, period, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.calmar_ratio(returns, period=period),
+            self.stats.calmar_ratio(returns, period=period),
             expected,
             DECIMAL_PLACES,
         )
@@ -312,7 +312,7 @@ class TestStats(BaseTestClass):
     )
     def test_omega(self, returns, risk_free, required_return, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.omega_ratio(
+            self.stats.omega_ratio(
                 returns, risk_free=risk_free, required_return=required_return
             ),
             expected,
@@ -330,9 +330,9 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_omega_returns(self, returns, required_return_less, required_return_more):
-        assert self.empyrical.omega_ratio(
+        assert self.stats.omega_ratio(
             returns, required_return_less
-        ) > self.empyrical.omega_ratio(returns, required_return_more)
+        ) > self.stats.omega_ratio(returns, required_return_more)
 
     # Regressive sharpe ratio tests
     @pytest.mark.parametrize(
@@ -351,7 +351,7 @@ class TestStats(BaseTestClass):
     )
     def test_sharpe_ratio(self, returns, risk_free, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.sharpe_ratio(returns, risk_free=risk_free),
+            self.stats.sharpe_ratio(returns, risk_free=risk_free),
             expected,
             DECIMAL_PLACES,
         )
@@ -367,11 +367,11 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_sharpe_translation_same(self, returns, required_return, translation):
-        sr = self.empyrical.sharpe_ratio(returns, required_return)
-        sr_depressed = self.empyrical.sharpe_ratio(
+        sr = self.stats.sharpe_ratio(returns, required_return)
+        sr_depressed = self.stats.sharpe_ratio(
             returns - translation, required_return - translation
         )
-        sr_raised = self.empyrical.sharpe_ratio(
+        sr_raised = self.stats.sharpe_ratio(
             returns + translation, required_return + translation
         )
         np.testing.assert_almost_equal(sr, sr_depressed, DECIMAL_PLACES)
@@ -394,12 +394,12 @@ class TestStats(BaseTestClass):
         translation_returns,
         translation_required,
     ):
-        sr = self.empyrical.sharpe_ratio(returns, required_return)
-        sr_depressed = self.empyrical.sharpe_ratio(
+        sr = self.stats.sharpe_ratio(returns, required_return)
+        sr_depressed = self.stats.sharpe_ratio(
             returns - translation_returns,
             required_return - translation_required,
         )
-        sr_raised = self.empyrical.sharpe_ratio(
+        sr_raised = self.stats.sharpe_ratio(
             returns + translation_returns,
             required_return + translation_required,
         )
@@ -413,11 +413,9 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_sharpe_translation_1(self, returns, required_return, translation):
-        sr = self.empyrical.sharpe_ratio(returns, required_return)
-        sr_depressed = self.empyrical.sharpe_ratio(
-            returns, required_return - translation
-        )
-        sr_raised = self.empyrical.sharpe_ratio(returns, required_return + translation)
+        sr = self.stats.sharpe_ratio(returns, required_return)
+        sr_depressed = self.stats.sharpe_ratio(returns, required_return - translation)
+        sr_raised = self.stats.sharpe_ratio(returns, required_return + translation)
         assert sr_depressed > sr
         assert sr > sr_raised
 
@@ -434,9 +432,9 @@ class TestStats(BaseTestClass):
             rand.normal(0.01, large, 1000),
             index=index,
         )
-        assert self.empyrical.sharpe_ratio(
-            smaller_normal, 0.001
-        ) > self.empyrical.sharpe_ratio(larger_normal, 0.001)
+        assert self.stats.sharpe_ratio(smaller_normal, 0.001) > self.stats.sharpe_ratio(
+            larger_normal, 0.001
+        )
 
     # Regressive downside risk tests
     @pytest.mark.parametrize(
@@ -482,7 +480,7 @@ class TestStats(BaseTestClass):
         indirect=["returns", "required_return"],
     )
     def test_downside_risk(self, returns, required_return, period, expected):
-        downside_risk = self.empyrical.downside_risk(
+        downside_risk = self.stats.downside_risk(
             returns, required_return=required_return, period=period
         )
         if isinstance(downside_risk, float):
@@ -504,9 +502,9 @@ class TestStats(BaseTestClass):
         noisy_returns_1 = add_noise[0:250].add(returns[250:], fill_value=0)
         noisy_returns_2 = add_noise[0:500].add(returns[500:], fill_value=0)
         noisy_returns_3 = add_noise[0:750].add(returns[750:], fill_value=0)
-        dr_1 = self.empyrical.downside_risk(noisy_returns_1, returns)
-        dr_2 = self.empyrical.downside_risk(noisy_returns_2, returns)
-        dr_3 = self.empyrical.downside_risk(noisy_returns_3, returns)
+        dr_1 = self.stats.downside_risk(noisy_returns_1, returns)
+        dr_2 = self.stats.downside_risk(noisy_returns_2, returns)
+        dr_3 = self.stats.downside_risk(noisy_returns_3, returns)
         assert dr_1 <= dr_2
         assert dr_2 <= dr_3
 
@@ -517,9 +515,9 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_downside_risk_trans(self, returns, required_return):
-        dr_0 = self.empyrical.downside_risk(returns, -required_return)
-        dr_1 = self.empyrical.downside_risk(returns, 0)
-        dr_2 = self.empyrical.downside_risk(returns, required_return)
+        dr_0 = self.stats.downside_risk(returns, -required_return)
+        dr_1 = self.stats.downside_risk(returns, 0)
+        dr_2 = self.stats.downside_risk(returns, required_return)
         assert dr_0 <= dr_1
         assert dr_1 <= dr_2
 
@@ -541,7 +539,7 @@ class TestStats(BaseTestClass):
             (rand.normal(0, larger_std, 1000) if larger_std != 0 else np.full(1000, 0)),
             index=pd.date_range("2000-1-30", periods=1000, freq="D"),
         )
-        assert self.empyrical.downside_risk(less_noise) < self.empyrical.downside_risk(
+        assert self.stats.downside_risk(less_noise) < self.stats.downside_risk(
             more_noise
         )
 
@@ -595,7 +593,7 @@ class TestStats(BaseTestClass):
         indirect=["returns", "required_return"],
     )
     def test_sortino(self, returns, required_return, period, expected):
-        sortino_ratio = self.empyrical.sortino_ratio(
+        sortino_ratio = self.stats.sortino_ratio(
             returns, required_return=required_return, period=period
         )
         if isinstance(sortino_ratio, float):
@@ -620,14 +618,14 @@ class TestStats(BaseTestClass):
     def test_sortino_add_noise(self, returns, required_return):
         # Don't mutate global test state
         returns = returns.copy()
-        sr_1 = self.empyrical.sortino_ratio(returns, required_return)
+        sr_1 = self.stats.sortino_ratio(returns, required_return)
         upside_values = returns[returns > required_return].index.tolist()
         # Add large losses at random upside locations
         loss_loc = rand.choice(upside_values, 2)
         returns[loss_loc[0]] = -0.01
-        sr_2 = self.empyrical.sortino_ratio(returns, required_return)
+        sr_2 = self.stats.sortino_ratio(returns, required_return)
         returns[loss_loc[1]] = -0.01
-        sr_3 = self.empyrical.sortino_ratio(returns, required_return)
+        sr_3 = self.stats.sortino_ratio(returns, required_return)
         assert sr_1 > sr_2
         assert sr_2 > sr_3
 
@@ -641,14 +639,14 @@ class TestStats(BaseTestClass):
     def test_sortino_sub_noise(self, returns, required_return):
         # Don't mutate global test state
         returns = returns.copy()
-        sr_1 = self.empyrical.sortino_ratio(returns, required_return)
+        sr_1 = self.stats.sortino_ratio(returns, required_return)
         downside_values = returns[returns < required_return].index.tolist()
         # Replace some values below the required return to the required return
         loss_loc = rand.choice(downside_values, 2)
         returns[loss_loc[0]] = required_return
-        sr_2 = self.empyrical.sortino_ratio(returns, required_return)
+        sr_2 = self.stats.sortino_ratio(returns, required_return)
         returns[loss_loc[1]] = required_return
-        sr_3 = self.empyrical.sortino_ratio(returns, required_return)
+        sr_3 = self.stats.sortino_ratio(returns, required_return)
         assert sr_1 <= sr_2
         assert sr_2 <= sr_3
 
@@ -660,11 +658,11 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_sortino_translation_same(self, returns, required_return, translation):
-        sr = self.empyrical.sortino_ratio(returns, required_return)
-        sr_depressed = self.empyrical.sortino_ratio(
+        sr = self.stats.sortino_ratio(returns, required_return)
+        sr_depressed = self.stats.sortino_ratio(
             returns - translation, required_return - translation
         )
-        sr_raised = self.empyrical.sortino_ratio(
+        sr_raised = self.stats.sortino_ratio(
             returns + translation, required_return + translation
         )
         np.testing.assert_almost_equal(sr, sr_depressed, DECIMAL_PLACES)
@@ -684,12 +682,12 @@ class TestStats(BaseTestClass):
         translation_returns,
         translation_required,
     ):
-        sr = self.empyrical.sortino_ratio(returns, required_return)
-        sr_depressed = self.empyrical.sortino_ratio(
+        sr = self.stats.sortino_ratio(returns, required_return)
+        sr_depressed = self.stats.sortino_ratio(
             returns - translation_returns,
             required_return - translation_required,
         )
-        sr_raised = self.empyrical.sortino_ratio(
+        sr_raised = self.stats.sortino_ratio(
             returns + translation_returns,
             required_return + translation_required,
         )
@@ -710,7 +708,7 @@ class TestStats(BaseTestClass):
     )
     def test_excess_sharpe(self, returns, factor_returns, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.excess_sharpe(returns, factor_returns),
+            self.stats.excess_sharpe(returns, factor_returns),
             expected,
             DECIMAL_PLACES,
         )
@@ -730,9 +728,9 @@ class TestStats(BaseTestClass):
         noisy_returns_1 = returns[0:250].add(benchmark[250:], fill_value=0)
         noisy_returns_2 = returns[0:500].add(benchmark[500:], fill_value=0)
         noisy_returns_3 = returns[0:750].add(benchmark[750:], fill_value=0)
-        ir_1 = self.empyrical.excess_sharpe(noisy_returns_1, benchmark)
-        ir_2 = self.empyrical.excess_sharpe(noisy_returns_2, benchmark)
-        ir_3 = self.empyrical.excess_sharpe(noisy_returns_3, benchmark)
+        ir_1 = self.stats.excess_sharpe(noisy_returns_1, benchmark)
+        ir_2 = self.stats.excess_sharpe(noisy_returns_2, benchmark)
+        ir_3 = self.stats.excess_sharpe(noisy_returns_3, benchmark)
         assert abs(ir_1) < abs(ir_2)
         assert abs(ir_2) < abs(ir_3)
 
@@ -749,11 +747,9 @@ class TestStats(BaseTestClass):
         indirect=True,
     )
     def test_excess_sharpe_trans(self, returns, add_noise, benchmark):
-        ir = self.empyrical.excess_sharpe(returns + add_noise, returns)
-        raised_ir = self.empyrical.excess_sharpe(
-            returns + add_noise + benchmark, returns
-        )
-        depressed_ir = self.empyrical.excess_sharpe(
+        ir = self.stats.excess_sharpe(returns + add_noise, returns)
+        raised_ir = self.stats.excess_sharpe(returns + add_noise + benchmark, returns)
+        depressed_ir = self.stats.excess_sharpe(
             returns + add_noise - benchmark, returns
         )
         assert ir < raised_ir
@@ -793,7 +789,7 @@ class TestStats(BaseTestClass):
         indirect=["returns", "benchmark"],
     )
     def test_alpha(self, returns, benchmark, expected):
-        observed = self.empyrical.alpha(returns, benchmark)
+        observed = self.stats.alpha(returns, benchmark)
         np.testing.assert_almost_equal(observed, expected, DECIMAL_PLACES)
 
         if len(returns) == len(benchmark):
@@ -836,7 +832,7 @@ class TestStats(BaseTestClass):
         # Translate returns and generate alphas and betas.
         returns_depressed = returns - translation
         returns_raised = returns + translation
-        alpha_beta = self.empyrical(return_types=np.ndarray).alpha_beta
+        alpha_beta = self.stats(return_types=np.ndarray).alpha_beta
         (alpha_depressed, beta_depressed) = alpha_beta(returns_depressed, benchmark)
         (alpha_standard, beta_standard) = alpha_beta(returns, benchmark)
         (alpha_raised, beta_raised) = alpha_beta(returns_raised, benchmark)
@@ -883,7 +879,7 @@ class TestStats(BaseTestClass):
         returns_more = pd.Series(ret_more, index=index)
         benchmark_more = pd.Series(bench_more, index=index)
         # Calculate alpha/beta values
-        alpha_beta = self.empyrical(return_types=np.ndarray).alpha_beta
+        alpha_beta = self.stats(return_types=np.ndarray).alpha_beta
         alpha_less, beta_less = alpha_beta(returns_less, benchmark_less)
         alpha_more, beta_more = alpha_beta(returns_more, benchmark_more)
         # Alpha determines by how much returns vary from the benchmark return.
@@ -903,7 +899,7 @@ class TestStats(BaseTestClass):
         indirect=True,
     )
     def test_alpha_beta_with_nan_inputs(self, returns, benchmark):
-        alpha, beta = self.empyrical(return_types=np.ndarray).alpha_beta(
+        alpha, beta = self.stats(return_types=np.ndarray).alpha_beta(
             returns,
             benchmark,
         )
@@ -942,7 +938,7 @@ class TestStats(BaseTestClass):
         expected,
         decimal_places,
     ):
-        observed = self.empyrical.beta(returns, benchmark)
+        observed = self.stats.beta(returns, benchmark)
         np.testing.assert_almost_equal(
             observed,
             expected,
@@ -980,10 +976,10 @@ class TestStats(BaseTestClass):
     def test_alpha_beta_equality(self, returns, benchmark):
         alpha, beta = alpha_beta(returns, benchmark)
         np.testing.assert_almost_equal(
-            alpha, self.empyrical.alpha(returns, benchmark), DECIMAL_PLACES
+            alpha, self.stats.alpha(returns, benchmark), DECIMAL_PLACES
         )
         np.testing.assert_almost_equal(
-            beta, self.empyrical.beta(returns, benchmark), DECIMAL_PLACES
+            beta, self.stats.beta(returns, benchmark), DECIMAL_PLACES
         )
 
         if len(returns) == len(benchmark):
@@ -1010,7 +1006,7 @@ class TestStats(BaseTestClass):
     )
     def test_stability_of_timeseries(self, returns, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.stability_of_timeseries(returns),
+            self.stats.stability_of_timeseries(returns),
             expected,
             DECIMAL_PLACES,
         )
@@ -1026,7 +1022,7 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_tail_ratio(self, returns, expected):
-        np.testing.assert_almost_equal(self.empyrical.tail_ratio(returns), expected, 1)
+        np.testing.assert_almost_equal(self.stats.tail_ratio(returns), expected, 1)
 
     # Regression tests for CAGR.
     @pytest.mark.parametrize(
@@ -1042,7 +1038,7 @@ class TestStats(BaseTestClass):
     )
     def test_cagr(self, returns, period, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.cagr(returns, period=period),
+            self.stats.cagr(returns, period=period),
             expected,
             DECIMAL_PLACES,
         )
@@ -1056,16 +1052,16 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_cagr_translation(self, returns, constant):
-        cagr_depressed = self.empyrical.cagr(returns - constant)
-        cagr_unchanged = self.empyrical.cagr(returns)
-        cagr_raised = self.empyrical.cagr(returns + constant)
+        cagr_depressed = self.stats.cagr(returns - constant)
+        cagr_unchanged = self.stats.cagr(returns)
+        cagr_raised = self.stats.cagr(returns + constant)
         assert cagr_depressed < cagr_unchanged
         assert cagr_unchanged < cagr_raised
 
     # Function does not return np.nan when inputs contain np.nan.
     @pytest.mark.parametrize("returns", ["sparse_noise"], indirect=True)
     def test_cagr_with_nan_inputs(self, returns):
-        assert not np.isnan(self.empyrical.cagr(returns))
+        assert not np.isnan(self.stats.cagr(returns))
 
     # Adding noise to returns should not significantly alter the cagr values.
     # Confirm that adding noise does not change cagr values to one
@@ -1080,9 +1076,9 @@ class TestStats(BaseTestClass):
         indirect=True,
     )
     def test_cagr_noisy(self, returns, add_noise):
-        cagr = self.empyrical.cagr(returns)
-        noisy_cagr_1 = self.empyrical.cagr(returns + add_noise)
-        noisy_cagr_2 = self.empyrical.cagr(returns - add_noise)
+        cagr = self.stats.cagr(returns)
+        noisy_cagr_1 = self.stats.cagr(returns + add_noise)
+        noisy_cagr_2 = self.stats.cagr(returns - add_noise)
         np.testing.assert_approx_equal(cagr, noisy_cagr_1, 1)
         np.testing.assert_approx_equal(cagr, noisy_cagr_2, 1)
 
@@ -1099,7 +1095,7 @@ class TestStats(BaseTestClass):
     )
     def test_beta_fragility_heuristic(self, returns, factor_returns, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.beta_fragility_heuristic(returns, factor_returns),
+            self.stats.beta_fragility_heuristic(returns, factor_returns),
             expected,
             DECIMAL_PLACES,
         )
@@ -1121,7 +1117,7 @@ class TestStats(BaseTestClass):
         indirect=["returns", "expected"],
     )
     def test_gpd_risk_estimates(self, returns, expected):
-        result = self.empyrical.gpd_risk_estimates_aligned(returns)
+        result = self.stats.gpd_risk_estimates_aligned(returns)
         for result_item, expected_item in zip(result, expected):
             np.testing.assert_almost_equal(result_item, expected_item, DECIMAL_PLACES)
 
@@ -1134,7 +1130,7 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_roll_max_drawdown(self, returns, window, expected):
-        test = self.empyrical.roll_max_drawdown(returns, window=window)
+        test = self.stats.roll_max_drawdown(returns, window=window)
         np.testing.assert_almost_equal(np.asarray(test), np.asarray(expected), 4)
 
         self.assert_indexes_match(test, returns[-len(expected) :])
@@ -1157,7 +1153,7 @@ class TestStats(BaseTestClass):
         indirect=["returns"],
     )
     def test_roll_sharpe_ratio(self, returns, window, expected):
-        test = self.empyrical.roll_sharpe_ratio(returns, window=window)
+        test = self.stats.roll_sharpe_ratio(returns, window=window)
         np.testing.assert_almost_equal(
             np.asarray(test), np.asarray(expected), DECIMAL_PLACES
         )
@@ -1176,7 +1172,7 @@ class TestStats(BaseTestClass):
     )
     def test_capture_ratio(self, returns, factor_returns, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.capture(returns, factor_returns),
+            self.stats.capture(returns, factor_returns),
             expected,
             DECIMAL_PLACES,
         )
@@ -1194,7 +1190,7 @@ class TestStats(BaseTestClass):
     )
     def test_down_capture(self, returns, factor_returns, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.down_capture(returns, factor_returns),
+            self.stats.down_capture(returns, factor_returns),
             expected,
             DECIMAL_PLACES,
         )
@@ -1236,7 +1232,7 @@ class TestStats(BaseTestClass):
         indirect=["returns", "benchmark"],
     )
     def test_roll_alpha_beta(self, returns, benchmark, window, expected):
-        test = self.empyrical(return_types=(np.ndarray, pd.DataFrame),).roll_alpha_beta(
+        test = self.stats(return_types=(np.ndarray, pd.DataFrame),).roll_alpha_beta(
             returns,
             benchmark,
             window,
@@ -1290,9 +1286,7 @@ class TestStats(BaseTestClass):
         indirect=["returns", "factor_returns"],
     )
     def test_roll_up_down_capture(self, returns, factor_returns, window, expected):
-        test = self.empyrical.roll_up_down_capture(
-            returns, factor_returns, window=window
-        )
+        test = self.stats.roll_up_down_capture(returns, factor_returns, window=window)
         np.testing.assert_almost_equal(
             np.asarray(test), np.asarray(expected), DECIMAL_PLACES
         )
@@ -1319,7 +1313,7 @@ class TestStats(BaseTestClass):
         indirect=["returns", "factor_returns"],
     )
     def test_roll_down_capture(self, returns, factor_returns, window, expected):
-        test = self.empyrical.roll_down_capture(returns, factor_returns, window=window)
+        test = self.stats.roll_down_capture(returns, factor_returns, window=window)
         np.testing.assert_almost_equal(
             np.asarray(test), np.asarray(expected), DECIMAL_PLACES
         )
@@ -1353,7 +1347,7 @@ class TestStats(BaseTestClass):
         indirect=["returns", "factor_returns"],
     )
     def test_roll_up_capture(self, returns, factor_returns, window, expected):
-        test = self.empyrical.roll_up_capture(returns, factor_returns, window=window)
+        test = self.stats.roll_up_capture(returns, factor_returns, window=window)
         np.testing.assert_almost_equal(
             np.asarray(test), np.asarray(expected), DECIMAL_PLACES
         )
@@ -1415,7 +1409,7 @@ class TestStats(BaseTestClass):
     )
     def test_up_down_capture(self, returns, factor_returns, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.up_down_capture(returns, factor_returns),
+            self.stats.up_down_capture(returns, factor_returns),
             expected,
             DECIMAL_PLACES,
         )
@@ -1433,13 +1427,13 @@ class TestStats(BaseTestClass):
     )
     def test_up_capture(self, returns, benchmark, expected):
         np.testing.assert_almost_equal(
-            self.empyrical.up_capture(returns, benchmark),
+            self.stats.up_capture(returns, benchmark),
             expected,
             DECIMAL_PLACES,
         )
 
     def test_value_at_risk(self):
-        value_at_risk = self.empyrical.value_at_risk_historical
+        value_at_risk = self.stats.value_at_risk_historical
 
         returns = [1.0, 2.0]
         np.testing.assert_almost_equal(value_at_risk(returns, cutoff=0.0), 1.0)
@@ -1460,8 +1454,8 @@ class TestStats(BaseTestClass):
             )
 
     def test_conditional_value_at_risk(self):
-        value_at_risk = self.empyrical.value_at_risk_historical
-        conditional_value_at_risk = self.empyrical.conditional_value_at_risk
+        value_at_risk = self.stats.value_at_risk_historical
+        conditional_value_at_risk = self.stats.conditional_value_at_risk
 
         # A single-valued array will always just have a CVaR of its only value.
         returns = rand.normal(0, 0.02, 1)
@@ -1490,16 +1484,16 @@ class TestStats(BaseTestClass):
             )
 
     @property
-    def empyrical(self):
+    def stats(self):
         """
-        This returns a wrapper around the empyrical module, so tests can
+        This returns a wrapper around the `stats` module, so tests can
         perform input conversions or return type checks on each call to an
-        empyrical function.
+        folioqpy.stats function.
 
         Each test case subclass can override this property, so that all the
         same tests are run, but with different function inputs or type checks.
 
-        This was done as part of enabling empyrical functions to work with
+        This was done as part of enabling folioqpy.stats functions to work with
         inputs of either pd.Series or np.ndarray, with the expectation that
         they will return the same type as their input.
 
@@ -1516,7 +1510,7 @@ class TestStats(BaseTestClass):
 
         e.g. empyrical.DAILY
         """
-        return ReturnTypeEmpyricalProxy(self, (pd.Series, float))
+        return ReturnTypeStatsProxy(self, (pd.Series, float))
 
 
 class TestStatsArrays(TestStats):
@@ -1527,8 +1521,8 @@ class TestStatsArrays(TestStats):
     """
 
     @property
-    def empyrical(self):
-        return PassArraysEmpyricalProxy(self, (np.ndarray, float))
+    def stats(self):
+        return PassArraysStatsProxy(self, (np.ndarray, float))
 
     def assert_indexes_match(self, result, expected):
         pass
@@ -1545,8 +1539,8 @@ class TestStatsIntIndex(TestStats):
     """
 
     @property
-    def empyrical(self):
-        return ConvertPandasEmpyricalProxy(
+    def stats(self):
+        return ConvertPandasStatsProxy(
             self,
             (pd.Series, float),
             lambda obj: type(obj)(obj.values, index=np.arange(len(obj))),
@@ -1651,7 +1645,7 @@ class Test2DStats:
         indirect=["returns", "expected"],
     )
     def test_cum_returns_df(self, returns, starting_value, expected):
-        cum_returns = self.empyrical.cum_returns(
+        cum_returns = self.stats.cum_returns(
             returns,
             starting_value=starting_value,
         )
@@ -1674,7 +1668,7 @@ class Test2DStats:
     )
     def test_cum_returns_final_df(self, returns, starting_value, expected):
         return_types = (pd.Series, np.ndarray)
-        result = self.empyrical(return_types=return_types).cum_returns_final(
+        result = self.stats(return_types=return_types).cum_returns_final(
             returns,
             starting_value=starting_value,
         )
@@ -1698,13 +1692,13 @@ class Test2DStats:
     )
     def test_batting_average(self, returns, benchmark, expected):
         return_types = (pd.Series, np.ndarray)
-        batting_average = self.empyrical(return_types=return_types).batting_average(
+        batting_average = self.stats(return_types=return_types).batting_average(
             returns, benchmark
         )
         np.testing.assert_almost_equal(batting_average, expected, 4)
 
     @property
-    def empyrical(self):
+    def stats(self):
         """
         Returns a wrapper around the empyrical module so tests can
         perform input conversions or return type checks on each call to an
@@ -1716,7 +1710,7 @@ class Test2DStats:
 
         """
 
-        return ReturnTypeEmpyricalProxy(self, pd.DataFrame)
+        return ReturnTypeStatsProxy(self, pd.DataFrame)
 
 
 class Test2DStatsArrays(Test2DStats):
@@ -1727,19 +1721,19 @@ class Test2DStatsArrays(Test2DStats):
     """
 
     @property
-    def empyrical(self):
-        return PassArraysEmpyricalProxy(self, np.ndarray)
+    def stats(self):
+        return PassArraysStatsProxy(self, np.ndarray)
 
     def assert_indexes_match(self, result, expected):
         pass
 
 
-class ReturnTypeEmpyricalProxy(object):
+class ReturnTypeStatsProxy(object):
     """
-    A wrapper around the empyrical module which, on each function call, asserts
+    A wrapper around the `stats` module which, on each function call, asserts
     that the type of the return value is in a given set.
 
-    Also asserts that inputs were not modified by the empyrical function call.
+    Also asserts that inputs were not modified by the `stats` function call.
 
     Calling an instance with kwargs will return a new copy with those
     attributes overridden.
@@ -1823,29 +1817,29 @@ class ReturnTypeEmpyricalProxy(object):
         return check_not_mutated
 
 
-class ConvertPandasEmpyricalProxy(ReturnTypeEmpyricalProxy):
+class ConvertPandasStatsProxy(ReturnTypeStatsProxy):
     """
-    A ReturnTypeEmpyricalProxy which also converts pandas NDFrame inputs to
-    empyrical functions according to the given conversion method.
+    A ReturnTypeStatsProxy which also converts pandas NDFrame inputs to
+    folioqpy.stats functions according to the given conversion method.
 
     Calling an instance with a truthy pandas_only will return a new instance
-    which will skip the test when an empyrical function is called.
+    which will skip the test when an folioqpy.stats function is called.
 
     """
 
     def __init__(self, test_case, return_types, convert, pandas_only=False):
-        super(ConvertPandasEmpyricalProxy, self).__init__(test_case, return_types)
+        super(ConvertPandasStatsProxy, self).__init__(test_case, return_types)
         self._convert = convert
         self._pandas_only = pandas_only
 
     def __getattr__(self, item):
         if self._pandas_only:
             pytest.skip(
-                "empyrical.%s expects pandas-only inputs that have "
+                "stats.%s expects pandas-only inputs that have "
                 "dt indices/labels" % item
             )
 
-        func = super(ConvertPandasEmpyricalProxy, self).__getattr__(item)
+        func = super(ConvertPandasStatsProxy, self).__getattr__(item)
 
         @wraps(func)
         def convert_args(*args, **kwargs):
@@ -1861,19 +1855,19 @@ class ConvertPandasEmpyricalProxy(ReturnTypeEmpyricalProxy):
         return convert_args
 
 
-class PassArraysEmpyricalProxy(ConvertPandasEmpyricalProxy):
+class PassArraysStatsProxy(ConvertPandasStatsProxy):
     """
-    A ConvertPandasEmpyricalProxy which converts NDFrame inputs to empyrical
+    A ConvertPandasStatsProxy which converts NDFrame inputs to folioqpy.stats
     functions to numpy arrays.
 
     Calls the underlying
-    empyrical.[alpha|beta|alpha_beta]_aligned functions directly, instead of
+    stats.[alpha|beta|alpha_beta]_aligned functions directly, instead of
     the wrappers which align Series first.
 
     """
 
     def __init__(self, test_case, return_types):
-        super(PassArraysEmpyricalProxy, self).__init__(
+        super(PassArraysStatsProxy, self).__init__(
             test_case,
             return_types,
             attrgetter("values"),
@@ -1889,4 +1883,4 @@ class PassArraysEmpyricalProxy(ConvertPandasEmpyricalProxy):
         ):
             item += "_aligned"
 
-        return super(PassArraysEmpyricalProxy, self).__getattr__(item)
+        return super(PassArraysStatsProxy, self).__getattr__(item)

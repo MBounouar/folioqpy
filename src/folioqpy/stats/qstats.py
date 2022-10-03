@@ -168,7 +168,7 @@ def aggregate_returns(returns, convert_to):
     ----------
     returns : pd.Series
        Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     convert_to : str
         Can be 'weekly', 'monthly', or 'yearly'.
 
@@ -203,7 +203,7 @@ def annual_return(returns, period=DAILY):
     ----------
     returns : pd.Series or np.ndarray
         Periodic returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     period : str or int
         Defines the periodicity of the 'returns' data for purposes of
         annualizing.
@@ -234,13 +234,13 @@ def annual_return(returns, period=DAILY):
 def cagr(returns, period=DAILY):
     """
     Compute compound annual growth rate. Alias function for
-    :func:`~empyrical.stats.annual_return`
+    :func:`~folioqpy.stats.annual_return`
 
     Parameters
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     period : str or int
         Defines the periodicity of the 'returns' data for purposes of
         annualizing.
@@ -270,7 +270,7 @@ def drawdown_series(returns, out=None):
     ----------
     returns : pd.Series, pd.DataFrame or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     out : array-like, optional
         Array to use as output buffer.
         If not passed, a new array will be created.
@@ -327,7 +327,7 @@ def max_drawdown(returns, out=None):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     out : array-like, optional
         Array to use as output buffer.
         If not passed, a new array will be created.
@@ -372,7 +372,7 @@ def annual_volatility(returns, period=DAILY, alpha=2.0, out=None):
     ----------
     returns : pd.Series or np.ndarray
         Periodic returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     period : str or int
         Defines the periodicity of the 'returns' data for purposes of
         annualizing.
@@ -426,7 +426,7 @@ def calmar_ratio(returns, period=DAILY):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     period : str, int
         Defines the periodicity of the 'returns' data for purposes of
         annualizing.
@@ -476,7 +476,7 @@ def omega_ratio(
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     risk_free : int, float
         Constant risk-free return throughout the period
     required_return : float, optional
@@ -531,7 +531,7 @@ def sharpe_ratio(returns, risk_free=0, period=DAILY, out=None):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     risk_free : int, float
         Constant daily risk-free return throughout the period.
     period : str or int
@@ -604,7 +604,7 @@ def sortino_ratio(
     ----------
     returns : pd.Series or np.ndarray or pd.DataFrame
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     required_return: float / series
         minimum acceptable return
     period : str or int
@@ -679,7 +679,7 @@ def downside_risk(returns, required_return=0, period=DAILY, out=None):
     ----------
     returns : pd.Series or np.ndarray or pd.DataFrame
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     required_return: float / series
         minimum acceptable return
     period : str or int
@@ -754,7 +754,7 @@ def excess_sharpe(returns, factor_returns, out=None):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns: float / series
         Benchmark return to compare returns against.
     out : array-like, optional
@@ -811,7 +811,7 @@ def alpha_beta(
     ----------
     returns : pd.Series
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series
          Daily noncumulative returns of the factor to which beta is
          computed. Usually a benchmark such as the market.
@@ -864,7 +864,7 @@ def roll_alpha_beta(returns, factor_returns, window=10, **kwargs):
         Array to use as output buffer.
         If not passed, a new array will be created.
     **kwargs
-        Forwarded to :func:`~empyrical.alpha_beta`.
+        Forwarded to :func:`~folioqpy.alpha_beta`.
     """
     returns, factor_returns = _aligned_series(returns, factor_returns)
 
@@ -888,7 +888,7 @@ def alpha_beta_aligned(
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series or np.ndarray
          Daily noncumulative returns of the factor to which beta is
          computed. Usually a benchmark such as the market.
@@ -949,7 +949,7 @@ def alpha(
     ----------
     returns : pd.Series
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series
         Daily noncumulative returns of the factor to which beta is
         computed. Usually a benchmark such as the market.
@@ -1012,7 +1012,7 @@ def alpha_aligned(
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series or np.ndarray
         Daily noncumulative returns of the factor to which beta is
         computed. Usually a benchmark such as the market.
@@ -1088,7 +1088,7 @@ def beta(returns, factor_returns, risk_free=0.0, out=None):
     ----------
     returns : pd.Series
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series
          Daily noncumulative returns of the factor to which beta is
          computed. Usually a benchmark such as the market.
@@ -1129,7 +1129,7 @@ def beta_aligned(returns, factor_returns, risk_free=0.0, out=None):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series or np.ndarray
          Daily noncumulative returns of the factor to which beta is
          computed. Usually a benchmark such as the market.
@@ -1246,7 +1246,7 @@ def stability_of_timeseries(returns):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
 
     Returns
     -------
@@ -1276,7 +1276,7 @@ def tail_ratio(returns):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-         - See full explanation in :func:`~empyrical.stats.cum_returns`.
+         - See full explanation in :func:`~folioqpy.stats.cum_returns`.
 
     Returns
     -------
@@ -1302,7 +1302,7 @@ def capture(returns, factor_returns, period=DAILY):
     ----------
     returns : pd.Series or np.ndarray
         Returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series or np.ndarray
         Noncumulative returns of the factor to which beta is
         computed. Usually a benchmark such as the market.
@@ -1337,7 +1337,7 @@ def beta_fragility_heuristic(returns, factor_returns):
         ----------
         returns : pd.Series or np.ndarray
             Daily returns of the strategy, noncumulative.
-            - See full explanation in :func:`~empyrical.stats.cum_returns`.
+            - See full explanation in :func:`~folioqpy.stats.cum_returns`.
         factor_returns : pd.Series or np.ndarray
              Daily noncumulative returns of the factor to which beta is
              computed. Usually a benchmark such as the market.
@@ -1373,7 +1373,7 @@ def beta_fragility_heuristic_aligned(returns, factor_returns):
         ----------
         returns : pd.Series or np.ndarray
             Daily returns of the strategy, noncumulative.
-            - See full explanation in :func:`~empyrical.stats.cum_returns`.
+            - See full explanation in :func:`~folioqpy.stats.cum_returns`.
         factor_returns : pd.Series or np.ndarray
              Daily noncumulative returns of the factor to which beta is
              computed. Usually a benchmark such as the market.
@@ -1449,7 +1449,7 @@ def gpd_risk_estimates(returns, var_p=0.01):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     var_p : float
         The percentile to use for estimating the VaR and ES
 
@@ -1488,7 +1488,7 @@ def gpd_risk_estimates_aligned(returns, var_p=0.01):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     var_p : float
         The percentile to use for estimating the VaR and ES
 
@@ -1664,7 +1664,7 @@ def up_capture(returns, factor_returns, **kwargs):
     ----------
     returns : pd.Series or np.ndarray
         Returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series or np.ndarray
         Noncumulative returns of the factor to which beta is
         computed. Usually a benchmark such as the market.
@@ -1690,7 +1690,7 @@ def down_capture(returns, factor_returns, **kwargs):
     ----------
     returns : pd.Series or np.ndarray
         Returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series or np.ndarray
         Noncumulative returns of the factor to which beta is
         computed. Usually a benchmark such as the market.
@@ -1716,7 +1716,7 @@ def up_down_capture(returns, factor_returns, **kwargs):
     ----------
     returns : pd.Series or np.ndarray
         Returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series or np.ndarray
         Noncumulative returns of the factor to which beta is
         computed. Usually a benchmark such as the market.
@@ -1748,7 +1748,7 @@ def batting_average(returns, factor_returns):
     ----------
     returns : pd.Series or np.ndarray
         Returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns : pd.Series or np.ndarray
         Noncumulative returns of the factor to which beta is
         computed. Usually a benchmark such as the market.
@@ -1822,14 +1822,14 @@ def down_alpha_beta(returns, factor_returns, **kwargs):
 def roll_up_capture(returns, factor_returns, window=10, **kwargs):
     """
     Computes the up capture measure over a rolling window.
-    see documentation for :func:`~empyrical.stats.up_capture`.
+    see documentation for :func:`~folioqpy.stats.up_capture`.
     (pass all args, kwargs required)
 
     Parameters
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
 
     factor_returns : pd.Series or np.ndarray
         Noncumulative returns of the factor to which beta is
@@ -1846,14 +1846,14 @@ def roll_up_capture(returns, factor_returns, window=10, **kwargs):
 def roll_down_capture(returns, factor_returns, window=10, **kwargs):
     """
     Computes the down capture measure over a rolling window.
-    see documentation for :func:`~empyrical.stats.down_capture`.
+    see documentation for :func:`~folioqpy.stats.down_capture`.
     (pass all args, kwargs required)
 
     Parameters
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
 
     factor_returns : pd.Series or np.ndarray
         Noncumulative returns of the factor to which beta is
@@ -1870,14 +1870,14 @@ def roll_down_capture(returns, factor_returns, window=10, **kwargs):
 def roll_up_down_capture(returns, factor_returns, window=10, **kwargs):
     """
     Computes the up/down capture measure over a rolling window.
-    see documentation for :func:`~empyrical.stats.up_down_capture`.
+    see documentation for :func:`~folioqpy.stats.up_down_capture`.
     (pass all args, kwargs required)
 
     Parameters
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
 
     factor_returns : pd.Series or np.ndarray
         Noncumulative returns of the factor to which beta is

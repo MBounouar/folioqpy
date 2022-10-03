@@ -93,7 +93,7 @@ def roll(*args, **kwargs):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns (optional): float / series
         Benchmark return to compare returns against.
     function:
@@ -136,7 +136,7 @@ def up(returns, factor_returns, **kwargs):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns (optional): float / series
         Benchmark return to compare returns against.
     function:
@@ -162,7 +162,7 @@ def down(returns, factor_returns, **kwargs):
     ----------
     returns : pd.Series or np.ndarray
         Daily returns of the strategy, noncumulative.
-        - See full explanation in :func:`~empyrical.stats.cum_returns`.
+        - See full explanation in :func:`~folioqpy.stats.cum_returns`.
     factor_returns (optional): float / series
         Benchmark return to compare returns against.
     function:
@@ -195,7 +195,7 @@ def _create_unary_vectorized_roll_function(function):
             Array to use as output buffer.
             If not passed, a new array will be created.
         **kwargs
-            Forwarded to :func:`~empyrical.{name}`.
+            Forwarded to :func:`~folioqpy.{name}`.
 
         Returns
         -------
@@ -244,7 +244,7 @@ def _create_binary_vectorized_roll_function(function):
             Array to use as output buffer.
             If not passed, a new array will be created.
         **kwargs
-            Forwarded to :func:`~empyrical.{name}`.
+            Forwarded to :func:`~folioqpy.{name}`.
 
         Returns
         -------

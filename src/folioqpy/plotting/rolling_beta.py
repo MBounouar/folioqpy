@@ -14,6 +14,7 @@ def plot_rolling_beta(
     pf_name = portfolio.portfolio_name
     bm_name = portfolio.benchmark_name
     for n in [6, 12]:
+
         beta = roll_beta(
             portfolio.returns[pf_name],
             portfolio.returns[bm_name],

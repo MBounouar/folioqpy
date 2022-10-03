@@ -32,7 +32,6 @@ target-version = ['py39', 'py310']
 
 [[tool.mypy.overrides]]
 module = [
-    "empyrical",
     "scipy",
     "plotly",
     "plotly.graph_objects",
