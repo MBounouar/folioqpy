@@ -13,24 +13,25 @@ def plot_rolling_beta(
     fig = go.Figure()
     pf_name = portfolio.portfolio_name
     bm_name = portfolio.benchmark_name
-    beta = roll_beta(
-        portfolio.returns[pf_name],
-        portfolio.returns[bm_name],
-        # risk_free=0.0,
-        window=AnnualizationFactor.MONTHLY.value * 6,
-    ).reindex(portfolio.returns.index)
+    for n in [6, 12]:
+        beta = roll_beta(
+            portfolio.returns[pf_name],
+            portfolio.returns[bm_name],
+            # risk_free=0.0,
+            window=AnnualizationFactor.MONTHLY.value * n,
+        ).reindex(portfolio.returns.index)
 
-    fig.add_trace(
-        go.Scatter(
-            # legendgroup=name,
-            name=pf_name,
-            meta=pf_name,
-            x=beta.index,
-            y=beta.values,
-            mode="lines",
-            # visible="legendonly" if i > 0 else True,
-        ),
-    )
+        fig.add_trace(
+            go.Scatter(
+                # legendgroup=name,
+                name=f"{n}-mo window",
+                meta=f"{n}-mo window",
+                x=beta.index,
+                y=beta.values,
+                mode="lines",
+                # visible="legendonly" if i > 0 else True,
+            ),
+        )
 
     fig.add_hline(
         y=1.0,
