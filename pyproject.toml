@@ -24,8 +24,8 @@ classifiers = [
 ]
 
 [project.urls]
-homepage = "https://github.com/MBounouar/dash-pyfolio"
-"Source Code" = "https://github.com/MBounouar/dash-pyfolio"
+homepage = "https://github.com/MBounouar/folioqpy"
+"Source Code" = "https://github.com/MBounouar/folioqpy"
 
 [tool.black]
 target-version = ['py39', 'py310']

@@ -6,6 +6,10 @@
 Welcome to folioqpy's documentation!
 ========================================
 
+.. title:: folioqpy
+
+.. mdinclude:: ../../README.md
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

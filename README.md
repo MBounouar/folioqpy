@@ -4,14 +4,13 @@
 [![codecov](https://codecov.io/github/MBounouar/folioqpy/branch/main/graph/badge.svg?token=1H51ZECQ7H)](https://codecov.io/github/MBounouar/folioqpy)
 [![CodeFactor](https://www.codefactor.io/repository/github/mbounouar/folioqpy/badge)](https://www.codefactor.io/repository/github/mbounouar/folioqpy)
 
-## Summary
-
 **folioqpy** is a Python library that merges the functionalities of the defunct quantopian `pyfolio` and `empyrical` packages into a single one, but using `plotly` instead of `matplotlib`.
 
-## Rationale
+## Summary
 
 `plotly` allows for more cumstomized online reports (using Dash), interactive graphs, ...
 Taking advantage of a well tested but unfortunately defunct library and attempt to maintain and keep it up to date (typing, ...).
+Python >= 3.9
 
 ## Installation
 
@@ -30,6 +29,6 @@ PR's, ideas and other suggestions are welcome.
 
 ## TODO's
 
-[] Port all the pyfolio plots
-[] typing
-[] Docs
+- [] Port all the pyfolio plots
+- [] typing
+- [] Docs
