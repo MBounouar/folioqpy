@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from numpy.lib.stride_tricks import as_strided
 
-
 try:
     # fast versions
     import bottleneck as bn

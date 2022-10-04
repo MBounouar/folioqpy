@@ -1,9 +1,8 @@
 import plotly.graph_objects as go
+
+from ..periods import DAILY, MONTHLY, QUARTERLY, WEEKLY
 from ..portfolio_data import Portfolio
 from ..stats import aggregate_returns
-from ..periods import DAILY, WEEKLY, MONTHLY, QUARTERLY
-
-# import plotly.express as px
 
 
 def plot_return_quantiles(

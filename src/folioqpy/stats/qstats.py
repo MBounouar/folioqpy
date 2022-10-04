@@ -1903,7 +1903,6 @@ def roll_up_down_capture(returns, factor_returns, window=10, **kwargs):
 def simulate_paths(
     is_returns: pd.Series,
     num_days: int,
-    # starting_value: float = 1,
     num_samples: int = 1000,
     random_seed: Optional[int] = None,
 ) -> np.ndarray:
@@ -1915,8 +1914,6 @@ def simulate_paths(
         Non-cumulative in-sample returns
     num_days : int
         Number of days to project the probability cone forward.
-    starting_value : float, optional
-        _description_, by default 1
     num_samples : int, optional
         Number of samples to draw from the in-sample daily returns., by default 1000
     random_seed : Optional[int], optional
@@ -1985,7 +1982,8 @@ def forecast_cone_bootstrap(
     num_samples: int = 1000,
     random_seed: int = None,
 ) -> pd.DataFrame:
-    """
+    """Upper and lower bounds of an n standard deviation cone
+
     Determines the upper and lower bounds of an n standard deviation
     cone of forecasted cumulative returns. Future cumulative mean and
     standard devation are computed by repeatedly sampling from the
@@ -2026,7 +2024,6 @@ def forecast_cone_bootstrap(
     samples = simulate_paths(
         is_returns=is_returns,
         num_days=num_days,
-        # starting_value=starting_value,
         num_samples=num_samples,
         random_seed=random_seed,
     )
@@ -2043,10 +2040,7 @@ def forecast_cone_bootstrap(
 def get_max_drawdown_underwater(
     underwater: pd.Series,
 ) -> tuple[datetime.datetime, datetime.datetime, datetime.datetime]:
-
-    """
-    Determines peak, valley, and recovery dates given an 'underwater'
-    DataFrame.
+    """Determines peak, valley, and recovery dates given an 'underwater' DataFrame.
 
     An underwater DataFrame is a DataFrame that has precomputed
     rolling drawdown.
@@ -2078,8 +2072,7 @@ def get_max_drawdown_underwater(
 
 
 def get_top_drawdowns(df_cum, top=10):
-    """
-    Finds top drawdowns, sorted by drawdown amount.
+    """Finds top drawdowns, sorted by drawdown amount.
 
     Parameters
     ----------
