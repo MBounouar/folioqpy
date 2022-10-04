@@ -7,17 +7,24 @@ from ..periods import DAILY, WEEKLY, MONTHLY, QUARTERLY
 
 
 def plot_return_quantiles(
-    portfolio: Portfolio, title: str = "Returns Quantiles"
+    portfolio: Portfolio,
+    title: str = "Returns Quantiles",
 ) -> go.Figure:
-    """Box plot of daily, weekly, and monthly return
-    distributions.
+    """Box plot of daily, weekly, and monthly return distributions.
 
-    Args:
-        portfolio (Portfolio): _description_
+    Parameters
+    ----------
+    portfolio : Portfolio
+        Portfolio instance
+    title : str, optional
+        title, by default "Returns Quantiles"
 
-    Returns:
-        Figure: plotly graph object Figure instance
+    Returns
+    -------
+    go.Figure
+
     """
+
     pf_name = portfolio.name
     plot_periods = [DAILY, WEEKLY, MONTHLY, QUARTERLY]
     palette = {

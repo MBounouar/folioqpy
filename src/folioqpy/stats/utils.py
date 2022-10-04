@@ -47,11 +47,15 @@ def get_utc_timestamp(
 ) -> Union[pd.Timestamp, pd.DatetimeIndex]:
     """Returns the Timestamp/DatetimeIndex with either localized or converted to UTC.
 
-    Args:
-        dt (Union[pd.Timestamp, pd.DatetimeIndex]): the date(s) to be converted
+    Parameters
+    ----------
+    dt : Union[pd.Timestamp, pd.DatetimeIndex]
+        the date(s) to be converted
 
-    Returns:
-        (pd.Timestamp, pd.DatetimeIndex): date(s) converted to UTC
+    Returns
+    -------
+    Union[pd.Timestamp, pd.DatetimeIndex]
+        date(s) converted to UTC
     """
 
     dt = pd.to_datetime(dt)

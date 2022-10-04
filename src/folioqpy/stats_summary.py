@@ -48,13 +48,14 @@ def perf_stats(
 ) -> pd.DataFrame:
     """Returns some performance metrics of the strategy.
 
+    Parameters
+    ----------
+    portfolio : Portfolio
+        Instance of Portfolio
 
-    Args:
-      portfolio:
-        A Portfolio instance.
-
-    Returns:
-      A pandas DataFrame
+    Returns
+    -------
+    pd.DataFrame
 
     """
 
@@ -83,16 +84,25 @@ def perf_stats(
     return stats
 
 
-def top_drawdown_table(portfolio: Portfolio, top: int = 5) -> pd.DataFrame:
-    """Top Drawdown Table.
+def top_drawdown_table(
+    portfolio: Portfolio,
+    top: int = 5,
+) -> pd.DataFrame:
+    """Top Drawdowns table.
 
-    Args:
-        portfolio (Portfolio): _description_
-        top (int, optional): Number of drawdown periods to find. Defaults to 5.
+    Parameters
+    ----------
+    portfolio : Portfolio
+        Portfolio instance
+    top : int, optional
+        Number of drawdown periods to find, by default 5
 
-    Returns:
-        pd.DataFrame: drawdowns
+    Returns
+    -------
+    pd.DataFrame
+
     """
+
     returns = portfolio.returns[portfolio.name]
     df_cum = cum_returns(returns, 1.0)
     drawdown_periods = get_top_drawdowns(df_cum, top=top)

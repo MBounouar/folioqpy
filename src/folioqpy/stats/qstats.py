@@ -43,14 +43,18 @@ def simple_returns(
 ) -> Union[np.ndarray, pd.Series, pd.DataFrame]:
     """Compute simple returns from a timeseries of prices.
 
-    Args:
-        prices (pd.Series, pd.DataFrame, np.ndarray): Prices of assets in wide-format,
-            with assets as columns, and indexed by datetimes.
+    Parameters
+    ----------
+    prices : Union[np.ndarray, pd.Series, pd.DataFrame]
+        Prices of assets in wide-format, with assets as columns, and indexed by datetimes.
 
-    Returns:
-        np.ndarray, pd.Series, pd.DataFrame: Returns of assets in wide-format, with assets as columns,
-        and index coerced to be tz-aware.
+    Returns
+    -------
+    Union[np.ndarray, pd.Series, pd.DataFrame]
+        Returns of assets in wide-format, with assets as columns,
+        and index coerced to be tz-aware
     """
+
     if isinstance(prices, (pd.DataFrame, pd.Series)):
         out = prices.pct_change().iloc[1:]
     else:
@@ -62,8 +66,7 @@ def simple_returns(
 
 
 def cum_returns(returns, starting_value=0, out=None):
-    """
-    Compute cumulative returns from simple returns.
+    """Compute cumulative returns from simple returns.
 
     Parameters
     ----------
@@ -1900,25 +1903,29 @@ def roll_up_down_capture(returns, factor_returns, window=10, **kwargs):
 def simulate_paths(
     is_returns: pd.Series,
     num_days: int,
-    starting_value: float = 1,
+    # starting_value: float = 1,
     num_samples: int = 1000,
     random_seed: Optional[int] = None,
 ) -> np.ndarray:
     """Generate alternate paths using available values from in-sample returns.
 
-    Args:
-        is_returns (pd.Series): Non-cumulative in-sample returns.
-        num_days (int): Number of days to project the probability cone forward.
-        num_samples (int, optional): Number of samples to draw from the in-sample daily returns.
-        Each sample will be an array with length num_days.
-        A higher number of samples will generate a more accurate
-        bootstrap cone. Defaults to 1000.
-        random_seed (Union[int, None], optional): Seed for the pseudorandom number generator used by the pandas
-        sample method. Defaults to None.
+    Parameters
+    ----------
+    is_returns : pd.Series
+        Non-cumulative in-sample returns
+    num_days : int
+        Number of days to project the probability cone forward.
+    starting_value : float, optional
+        _description_, by default 1
+    num_samples : int, optional
+        Number of samples to draw from the in-sample daily returns., by default 1000
+    random_seed : Optional[int], optional
+        Seed for the pseudorandom number generator used by the sample method, by default None
 
-    Returns:
-        np.ndarray: samples
-
+    Returns
+    -------
+    np.ndarray
+        samples
     """
 
     samples = np.empty((num_samples, num_days))
@@ -2019,7 +2026,7 @@ def forecast_cone_bootstrap(
     samples = simulate_paths(
         is_returns=is_returns,
         num_days=num_days,
-        starting_value=starting_value,
+        # starting_value=starting_value,
         num_samples=num_samples,
         random_seed=random_seed,
     )
