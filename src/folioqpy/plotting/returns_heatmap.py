@@ -8,7 +8,7 @@ from ..stats.qstats import aggregate_returns
 
 def plot_monthly_returns_heatmap(portfolio: Portfolio, **kwargs) -> go.Figure:
     monthly_ret_table = aggregate_returns(
-        portfolio.returns[portfolio.portfolio_name], AnnualizationFactor.MONTHLY
+        portfolio.returns[portfolio.name], AnnualizationFactor.MONTHLY
     )
 
     monthly_ret_table = monthly_ret_table.unstack().round(3)

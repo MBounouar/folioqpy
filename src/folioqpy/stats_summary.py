@@ -60,12 +60,12 @@ def perf_stats(
 
     stats = pd.DataFrame(
         index=STAT_FUNC_NAMES.keys(),
-        columns=[portfolio.portfolio_name],
+        columns=[portfolio.name],
     ).rename_axis("Metric")
 
     for func_name, (stat_func, _) in STAT_FUNC_NAMES.items():
-        stats.loc[func_name, portfolio.portfolio_name] = stat_func(
-            portfolio.returns[portfolio.portfolio_name]
+        stats.loc[func_name, portfolio.name] = stat_func(
+            portfolio.returns[portfolio.name]
         )
 
     # if positions is not None:
@@ -93,7 +93,7 @@ def top_drawdown_table(portfolio: Portfolio, top: int = 5) -> pd.DataFrame:
     Returns:
         pd.DataFrame: drawdowns
     """
-    returns = portfolio.returns[portfolio.portfolio_name]
+    returns = portfolio.returns[portfolio.name]
     df_cum = cum_returns(returns, 1.0)
     drawdown_periods = get_top_drawdowns(df_cum, top=top)
     df_drawdowns = pd.DataFrame(

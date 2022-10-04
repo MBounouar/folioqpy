@@ -7,7 +7,7 @@ def plot_raw_returns(portfolio: Portfolio, **kwargs) -> go.Figure:
 
     for i, name in enumerate(portfolio.returns.columns):
 
-        if portfolio.live_start_date is not None and name == portfolio.portfolio_name:
+        if portfolio.live_start_date is not None and name == portfolio.name:
             back_ret = portfolio.returns.loc[
                 portfolio.returns.index < portfolio.live_start_date
             ]

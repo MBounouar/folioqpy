@@ -28,7 +28,7 @@ def plot_rolling_volatility(
             ),
         )
 
-        if name == portfolio.portfolio_name:
+        if name == portfolio.name:
             fig.add_hline(
                 y=rolling_vol_ts[name].mean(),
                 line_width=1.5,

@@ -11,7 +11,7 @@ def plot_rolling_beta(
     **kwargs,
 ) -> go.Figure:
     fig = go.Figure()
-    pf_name = portfolio.portfolio_name
+    pf_name = portfolio.name
     bm_name = portfolio.benchmark_name
     for n in [6, 12]:
 

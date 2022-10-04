@@ -14,7 +14,7 @@ def plot_cumulative_returns(
     cone_function=forecast_cone_bootstrap,
 ) -> go.Figure:
 
-    pf_name = portfolio.portfolio_name
+    pf_name = portfolio.name
     bmk_name = portfolio.benchmark_name
 
     if volatility_match:

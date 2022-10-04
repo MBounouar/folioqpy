@@ -18,7 +18,7 @@ def plot_return_quantiles(
     Returns:
         Figure: plotly graph object Figure instance
     """
-    pf_name = portfolio.portfolio_name
+    pf_name = portfolio.name
     plot_periods = [DAILY, WEEKLY, MONTHLY, QUARTERLY]
     palette = {
         "daily": "#4c72B0",

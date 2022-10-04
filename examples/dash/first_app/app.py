@@ -18,7 +18,7 @@ df = pd.concat([meta_ret, spy_ret], axis=1).dropna(how="any", axis=0)
 
 pf_data = SimplePortfolio(
     returns=df.loc["2019":],
-    # portfolio_name="Test Portfolio",
+    # name="Test Portfolio",
     live_start_date="2020-1-1",
 )
 

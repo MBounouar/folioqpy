@@ -10,7 +10,7 @@ def plot_monthly_returns_dist(
     **kwargs: dict[str, Any],
 ) -> go.Figure:
     monthly_ret_table = aggregate_returns(
-        portfolio.returns[portfolio.portfolio_name],
+        portfolio.returns[portfolio.name],
         AnnualizationFactor.MONTHLY,
     )
 
